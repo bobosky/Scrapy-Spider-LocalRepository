@@ -20,14 +20,14 @@ NEWSPIDER_MODULE = 'Taobao.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
-LIST_PAGE = 3
+LIST_PAGE = 1
 
 COMPRESSION_ENABLED = False
 
-SEARCH_WORD='战马功能能饮料'
+SEARCH_WORD='焕醒源'
 
 #Store INFO
-STORE_PATH = r'/Users/Ming/Documents/pycharm-projects/TaoBao/ResultPackage'
+STORE_PATH = r'/Users/Ming/PycharmProjects/Scrapy-Spider LocalRepository/TaoBaoSP/ResultPackage'
 FILE_SIZE = 1677
 
 # MANUAL COOKIES
