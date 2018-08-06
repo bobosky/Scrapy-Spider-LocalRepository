@@ -62,7 +62,21 @@ class TbinfospiderSpider(scrapy.Spider):
     def rate_first_parse(self, response):
         body = json.loads(re.findall('\((.*)\)', response.text)[0])
         maxpage = body['maxPage']
-        self.loop_rate_parse(response=response)
+        # self.loop_rate_parse(response=response)
+        # items = TaobaoItem()
+        # for item in body['comments']:
+        #     items['id'] = item['rateId']
+        #     items['url'] = response.url
+        #     items['platform'] = '淘宝'
+        #     items['viewType'] = '问答'
+        #     items['searchWord'] = response.meta['sw']
+        #     items['crawlTime'] = self.get_localtime()
+        #     items['publishTime'] = item['date']
+        #     items['level'] = 1
+        #     items['authorName'] = item['user']['nick']
+        #     items['content'] = item['content']
+        #     yield items
+
         if maxpage == 1:
             return
         else:
@@ -73,7 +87,9 @@ class TbinfospiderSpider(scrapy.Spider):
                 url = 'https://rate.taobao.com/feedRateList.htm?{}'.format(urlencode(self.rate_parmas))
                 yield Request(url=url, callback=self.loop_rate_parse,meta={'ma':maxpage,'sw':response.meta['sw']})
 
+
     def loop_rate_parse(self, response):
+        print('loop_rate_parse called')
         body = json.loads(re.findall('\((.*)\)', response.text)[0])
         items = TaobaoItem()
         for item in body['comments']:
@@ -87,5 +103,4 @@ class TbinfospiderSpider(scrapy.Spider):
             items['level'] = 1
             items['authorName'] = item['user']['nick']
             items['content'] = item['content']
-            print(items)
-
+            yield items
