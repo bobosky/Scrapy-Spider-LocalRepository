@@ -56,15 +56,22 @@ class XiechengSpider(scrapy.Spider):
         ttd_pager = response.xpath('//div[@class="ttd_pager cf"]').extract()
         if ttd_pager:
             numpage = response.css('.numpage').xpath('text()').extract_first()
-            log.msg('{n}有{p}'.format(n=name,p=numpage),log.INFO)
+            log.msg('{n}有{p}页'.format(n=name,p=numpage),log.INFO)
 
             for i in range(2,int(numpage)):
-                self.param['poiID'] = curid
-                self.param['pagenow'] = i
+                # self.param['poiID'] = curid
+                # self.param['pagenow'] = i
                 loop_url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
-                log.msg('发出 {name} 第{page}页请求'.format(name=name,page=i), log.INFO)
-                yield Request(url=loop_url, callback=self.analysis, meta={'data':self.param,'curpage':i,'curid':curid}, dont_filter=True)
-            #
+                yield Request(url=loop_url, callback=self.analysis, meta={'data':{  'poiID': curid,
+                                                                                    'districtId': 85,
+                                                                                    'districtEName': 'Nantong',
+                                                                                    'pagenow': i,
+                                                                                    'order': '3.0',
+                                                                                    'star': '0.0',
+                                                                                    'tourist': '0.0',
+                                                                                    'resourcetype': 2
+                                                                                 },'curpage':i,'curid':curid}, dont_filter=True)
+
         else:
             log.msg('{name} 只有一页,结束'.format(name=name), log.INFO)
             return
@@ -82,7 +89,6 @@ class XiechengSpider(scrapy.Spider):
     #         self.param['pagenow'] = curpage
     #         loop_url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
     #         return Request(url=loop_url, callback=self.loop_request,meta={'data': self.param, 'curpage': curpage, 'curid': curid}, dont_filter=True)
-    #
 
     def analysis(self, response):
         name = self.poiId_list[response.meta['curid']]
@@ -92,7 +98,7 @@ class XiechengSpider(scrapy.Spider):
         itemspipline = TravellerspItem()
         items = response.css('.comment_ctrip .comment_single')
         for item in items:
-            # log.msg('{name}:{status}'.format(name=name,status=status[0] if status else '无status'), log.INFO)
+            log.msg('{name}:{status}'.format(name=name,status=status[0] if status else '无status'), log.INFO)
 
             publishTime = item.css('.time_line').xpath('string(.)').extract()
             like = item.css('.useful em').xpath('string(.)').extract()
@@ -100,7 +106,8 @@ class XiechengSpider(scrapy.Spider):
             authorID = item.xpath('./div[@class="userimg"]/span[@class="ellipsis"]/a[@itemprop="author"]/@href').extract()
             content = item.css('.main_con .heightbox').xpath('string(.)').extract()
 
-            itemspipline['id'] = '{name}:{status}'.format(name=name,status=status[0] if status else '无status')
+            # itemspipline['id'] = '{name}:{status}'.format(name=name,status=status[0] if status else '无status')
+            itemspipline['id'] = ''
             itemspipline['url'] = response.url
             itemspipline['platform'] = '携程'
             itemspipline['viewType'] = '评论'
@@ -113,6 +120,6 @@ class XiechengSpider(scrapy.Spider):
             itemspipline['authorName'] = authorName[0] if authorName else ''
             itemspipline['authorID'] = authorID[0] if authorID else ''
             itemspipline['content'] = content[0] if content else ''
-            print(itemspipline,response.meta['data'])
-    #         self.pipline.process_item(item=itemspipline, spider=None)
+            print(itemspipline,'\n')
+            self.pipline.process_item(item=itemspipline, spider=None)
         return

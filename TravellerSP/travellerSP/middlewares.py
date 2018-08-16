@@ -7,6 +7,7 @@
 
 from scrapy import signals
 from scrapy.http import HtmlResponse
+from scrapy import log
 import requests
 
 class PostDownloadMiddleware(object):
@@ -23,6 +24,7 @@ class PostDownloadMiddleware(object):
         super(PostDownloadMiddleware, self).__init__()
 
     def process_request(self, request, spider):
+        log.msg(request.meta['data'],log.INFO)
         htmlsorce = requests.post(url=request.url,headers=self.headers,data=request.meta['data'])
         return HtmlResponse(url=htmlsorce.url,body=htmlsorce.content,headers=htmlsorce.headers,request=request,status=htmlsorce.status_code)
 

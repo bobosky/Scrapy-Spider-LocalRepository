@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 import scrapy,time,re
+from GOV_SP import helper
 from scrapy.http import Request
-from GOV_SP.items import BeijingItem
+from GOV_SP.items import GOVItem
 
 class BidingspSpider(scrapy.Spider):
     name = 'beijingSP'
     allowed_domains = ['bgpc.gov.cn']
-    # start_urls = ['http://bgpc.gov.cn/']
-
-    def get_localtime(self):
-        return time.strftime("%Y-%m-%d", time.localtime())
 
     def start_requests(self):
         url = 'http://www.bgpc.gov.cn/defaults/news/news/page/1%2Ftid%2F2'
@@ -23,10 +20,9 @@ class BidingspSpider(scrapy.Spider):
             yield Request(url=url, callback=self.detail_parse)
 
     def detail_parse(self, response):
-        # response.css('.details-content .content-right-details-content').extract()
         body = response.css('.details-content .content-right-details-content').xpath('string(.)').extract_first()
         details_top = response.css('.details-content .content-right-details-top')
-        itempipline = BeijingItem()
+        itempipline = GOVItem()
 
         product = re.findall('采购项目性质或用途：(\w*)',body)
         tenderee_cor = re.findall('采购人名称：(\w*)',body)
@@ -34,16 +30,15 @@ class BidingspSpider(scrapy.Spider):
         deadTime = re.findall('投标截止时间、开标时间：(\w*)',body)
         submitTime = re.findall('采购项目性质或用途：(\w*)',body)
         address = re.findall('采购人地址：(\w*)',body)
-        sum = re.findall('预算资金：(\w*.\w*)',body)[0]
-        tenderee_contacter = re.findall('联系人：(\w*)',body)[0]
-        tenderee_phoneNum = re.findall('联系电话：(\d*-\d*)',body)[0]
-        winbider = re.findall('成交人名称：(\w*)',body)[0]
-        winbiderAddr = re.findall('成交人地址：(\w*)',body)[0]
-        winbider_contacter = re.findall('项目负责人：(\w*)',body)[0]
-        winbider_phoneNum = re.findall('联系电话：(\d*-\d*)',body)[0]
+        sum = re.findall('预算资金：(\w*.\w*)',body)
+        tenderee_contacter = re.findall('联系人：(\w*)',body)
+        tenderee_phoneNum = re.findall('联系电话：(\d*-\d*)',body)
+        winbider = re.findall('成交人名称：(\w*)',body)
+        winbiderAddr = re.findall('成交人地址：(\w*)',body)
+        winbider_contacter = re.findall('项目负责人：(\w*)',body)
+        winbider_phoneNum = re.findall('联系电话：(\d*-\d*)',body)
 
-
-        itempipline['crawlTime'] = self.get_localtime()
+        itempipline['crawlTime'] = helper.get_localtime()
         itempipline['platform'] = '北京政府采购中心'
         itempipline['search_column'] = '最新'
         itempipline['product'] = product[0] if product else ''

@@ -169,10 +169,10 @@ param2 = {
 }
 
 param22 = {
-        'poiID': 24650510,
+        'poiID': 76177, #24650510 96090 76177
         'districtId': 85,
         'districtEName': 'Nantong',
-        'pagenow': 1,
+        'pagenow': 138,
         'order': '3.0',
         'star': '0.0',
         'tourist': '0.0',
@@ -182,3 +182,4 @@ param22 = {
 url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
 html = requests.post(url=url,data=param22,headers=headers)
 print(html.text)
+
