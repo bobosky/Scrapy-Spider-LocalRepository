@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import sys
+import sys, pandas
 from scrapy.conf import settings
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
@@ -40,4 +40,30 @@ class TravellerspPipeline(object):
                 f.writelines(self.buffer_list)
                 self.buffer_list.clear()
 
+        return item
+
+class saveExcelPipeline(object):
+    store_dict = None
+    cur_rowindex = None
+
+    def __init__(self):
+        dispatcher.connect(receiver=self.spider_close,signal=signals.spider_closed)
+        self.cur_rowindex = 1
+        self.store_dict = {'学校名称':{},'学校地址':{},'电话号码':{},'邮编':{},'网页':{}}
+
+    def spider_close(self):
+        with pandas.ExcelWriter('output.xlsx') as writer:
+            df = pandas.DataFrame(data=self.store_dict)
+            df.to_excel(writer,'Sheet1')
+            writer.save()
+        self.store_dict.clear()
+
+    def process_item(self, item, spider):
+        self.store_dict['学校名称'][self.cur_rowindex] = item['name']
+        self.store_dict['学校地址'][self.cur_rowindex] = item['address']
+        self.store_dict['电话号码'][self.cur_rowindex] = item['phone']
+        self.store_dict['邮编'][self.cur_rowindex] = item['code']
+        self.store_dict['网页'][self.cur_rowindex] = item['web']
+
+        self.cur_rowindex = self.cur_rowindex + 1
         return item

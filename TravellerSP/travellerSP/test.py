@@ -179,7 +179,12 @@ param22 = {
         'resourcetype': 2
     }
 
-url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
-html = requests.post(url=url,data=param22,headers=headers)
-print(html.text)
+# url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
+# html = requests.post(url=url,data=param22,headers=headers)
+# print(html.text)
 
+import pandas as pd
+f = pd.ExcelWriter('output.xlsx')
+df = pd.DataFrame(data={'test':{3:'zhuzhi',"rrr":'dddf'},'ffff':{3:'dddf','rrr':'3fff'}})
+df.to_excel(f,'Sheet1')
+f.save()

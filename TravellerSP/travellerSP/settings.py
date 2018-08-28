@@ -58,8 +58,8 @@ CONCURRENT_REQUESTS_PER_IP = 5
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'travellerSP.middlewares.GetDownloadMiddleware': 901,
-   'travellerSP.middlewares.PostDownloadMiddleware': 901,
+   'travellerSP.middlewares.GetDownloadMiddleware': 901,
+   # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
 
 # Enable or disable extensions
@@ -71,7 +71,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'travellerSP.pipelines.TravellerspPipeline': 300,
+   'travellerSP.pipelines.saveExcelPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
