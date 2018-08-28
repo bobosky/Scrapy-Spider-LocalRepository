@@ -19,7 +19,7 @@ class GOVItem(scrapy.Item):
     submitTime = scrapy.Field()  # S9 提交时间
     address = scrapy.Field()  # S8 招标人地址
     projectName = scrapy.Field()  # S4项目名称
-    # detail = scrapy.Field()  # Q1 详细
+    detail = scrapy.Field()  # Q1 详细
     sum = scrapy.Field()  # S10
     url = scrapy.Field()  # S1
     bidingProxy = scrapy.Field()  # G15 招标代理

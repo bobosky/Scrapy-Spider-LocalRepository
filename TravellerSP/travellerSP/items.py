@@ -24,3 +24,11 @@ class TravellerspItem(scrapy.Item):
     authorName = scrapy.Field() # 《G1》eg:盖子
     authorID = scrapy.Field() # 《G0》
     content = scrapy.Field() # 《Q1》
+
+
+class SchoolInfoItem(scrapy.Item):
+    name = scrapy.Field()
+    address = scrapy.Field()
+    phone = scrapy.Field()
+    code = scrapy.Field()
+    web = scrapy.Field()

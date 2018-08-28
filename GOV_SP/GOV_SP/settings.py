@@ -19,8 +19,10 @@ NEWSPIDER_MODULE = 'GOV_SP.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-
 COMPRESSION_ENABLED = False
+
+STORE_PATH = '/Users/Ming/PycharmProjects/Scrapy-Spider LocalRepository/GOV_SP/Result'
+FILE_SIZE = 1677
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

@@ -15,6 +15,7 @@ class GovPipeline(object):
         self.buffer_list = []
         self.filename = 0
 
+
     def close_spider(self, spider):
         if self.buffer_list:
             with open('{path}/{cfn}'.format(cfn='{}.txt'.format(self.filename + 1), path=settings.get('STORE_PATH')),'a+') as f:
