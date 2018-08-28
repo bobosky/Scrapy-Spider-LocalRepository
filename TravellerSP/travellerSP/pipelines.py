@@ -20,7 +20,7 @@ class TravellerspPipeline(object):
 
     def close_spider(self, spider):
         if self.buffer_list:
-            with open('{path}/{cfn}'.format(cfn='{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
+            with open('{path}\{cfn}'.format(cfn='{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
                 f.writelines(self.buffer_list)
                 self.buffer_list.clear()
 
@@ -36,7 +36,7 @@ class TravellerspPipeline(object):
             self.buffer_list.append(str)
         else:
             self.filename = self.filename + 1
-            with open(r'{path}/{cfn}'.format(cfn=r'{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
+            with open(r'{path}\{cfn}'.format(cfn=r'{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
                 f.writelines(self.buffer_list)
                 self.buffer_list.clear()
 

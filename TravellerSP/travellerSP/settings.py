@@ -21,7 +21,7 @@ NEWSPIDER_MODULE = 'travellerSP.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 COMPRESSION_ENABLED = False
-STORE_PATH = r'/Users/Ming/PycharmProjects/Scrapy-Spider LocalRepository/TravellerSP/ResultPackage'
+STORE_PATH = r'C:\Users\Administrator\Desktop\code\Scrapy-Spider-LocalRepository\TravellerSP\Result'
 FILE_SIZE = 1677
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)

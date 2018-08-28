@@ -58,7 +58,7 @@ class XiechengSpider(scrapy.Spider):
             numpage = response.css('.numpage').xpath('text()').extract_first()
             log.msg('{n}有{p}页'.format(n=name,p=numpage),log.INFO)
 
-            for i in range(2,int(numpage)):
+            for i in range(2,int(numpage)+1):
                 # self.param['poiID'] = curid
                 # self.param['pagenow'] = i
                 loop_url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
@@ -100,6 +100,7 @@ class XiechengSpider(scrapy.Spider):
         for item in items:
             log.msg('{name}:{status}'.format(name=name,status=status[0] if status else '无status'), log.INFO)
 
+            id = item.css('.useful a').xpath('@data-id').extract()
             publishTime = item.css('.time_line').xpath('string(.)').extract()
             like = item.css('.useful em').xpath('string(.)').extract()
             authorName = item.css('.userimg .ellipsis a').xpath('string(.)').extract()
@@ -107,7 +108,7 @@ class XiechengSpider(scrapy.Spider):
             content = item.css('.main_con .heightbox').xpath('string(.)').extract()
 
             # itemspipline['id'] = '{name}:{status}'.format(name=name,status=status[0] if status else '无status')
-            itemspipline['id'] = ''
+            itemspipline['id'] = id[0] if id else ''
             itemspipline['url'] = response.url
             itemspipline['platform'] = '携程'
             itemspipline['viewType'] = '评论'
