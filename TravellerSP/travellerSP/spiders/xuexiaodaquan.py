@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import json,re,requests,scrapy
+import json,re,requests,scrapy,time
 from urllib.parse import urlencode
 from scrapy.http import Request
 from lxml import etree
@@ -16,10 +16,11 @@ class XuexiaoSpider(scrapy.Spider):
 
     def city_parse(self, response):
         list = response.css('.city-all dl dd a')
-        for i in list[1:4]:
+        for i in list:
             href = i.xpath('@href').extract_first()
             if not href == '#':
                 yield Request(url=href, callback=self.school_parse)
+                time.sleep(6)
             else:
                 continue
 
@@ -27,11 +28,13 @@ class XuexiaoSpider(scrapy.Spider):
         list = response.css('#nav-drop .drop-title a').xpath('@href').extract()
         for i in list[1:4]:
             yield Request(url=i, callback=self.datil_parse)
+            time.sleep(6)
 
     def datil_parse(self, response):
         urllist = response.xpath('//div[@class="list-xx clearfix"]/dl/dt/a/@href').extract()
         for i in urllist:
             yield Request(url=i, callback=self.parse)
+            time.sleep(6)
 
     def parse(self, response):
         pipline = SchoolInfoItem()
@@ -41,5 +44,6 @@ class XuexiaoSpider(scrapy.Spider):
         pipline['phone'] = info[1].xpath('text()').extract_first()
         pipline['code'] = info[2].xpath('text()').extract_first()
         pipline['web'] = info[3].xpath('text()').extract_first()
-        print(pipline)
+
+        return pipline
 

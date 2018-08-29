@@ -66,4 +66,4 @@ class saveExcelPipeline(object):
         self.store_dict['网页'][self.cur_rowindex] = item['web']
 
         self.cur_rowindex = self.cur_rowindex + 1
-        return item
+        print(item)
