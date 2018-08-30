@@ -25,12 +25,15 @@ class TravellerspPipeline(object):
                 self.buffer_list.clear()
 
     def process_item(self, item, spider):
-        str = '《Root》《S0》{id}《/S0》《S1》{url}《/S1》《S2》{pf}《/S2》《S3a》{vt}《/S3a》《S3b》{sw}《S3b》《S4》{title}《/S4》《S5》{ct}《/S5》《S6》{pt}《/S6》《S9》{level}《/S9》《S13》{like}《/S13》《G1》{an}《/G1》《G0》{aid}《/G0》《Q1》{content}《/Q1》《/Root》\n'.format(
-            id=item.setdefault('id', ''), url=item.setdefault('url', ''), pf=item.setdefault('platform', ''),
-            vt=item.setdefault('viewType', ''), sw=item.setdefault('searchWord', ''),
-            title=item.setdefault('title', ''), ct=item.setdefault('crawlTime', ''),
-            pt=item.setdefault('publishTime', ''), level=item.setdefault('level', ''),like=item.setdefault('like', ''),
-            an=item.setdefault('authorName', ''),aid=item.setdefault('authorID', ''), content=item.setdefault('content', ''))
+        # str = '《Root》《S0》{id}《/S0》《S1》{url}《/S1》《S2》{pf}《/S2》《S3a》{vt}《/S3a》《S3b》{sw}《S3b》《S4》{title}《/S4》《S5》{ct}《/S5》《S6》{pt}《/S6》《S9》{level}《/S9》《S13》{like}《/S13》《G1》{an}《/G1》《G0》{aid}《/G0》《Q1》{content}《/Q1》《/Root》\n'.format(
+        #     id=item.setdefault('id', ''), url=item.setdefault('url', ''), pf=item.setdefault('platform', ''),
+        #     vt=item.setdefault('viewType', ''), sw=item.setdefault('searchWord', ''),
+        #     title=item.setdefault('title', ''), ct=item.setdefault('crawlTime', ''),
+        #     pt=item.setdefault('publishTime', ''), level=item.setdefault('level', ''),like=item.setdefault('like', ''),
+        #     an=item.setdefault('authorName', ''),aid=item.setdefault('authorID', ''), content=item.setdefault('content', ''))
+        str = '《Root》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》'.format(
+            na=item.setdefault('name', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''),
+        )
 
         if not sys.getsizeof(self.buffer_list) > settings.get('FILE_SIZE'):
             self.buffer_list.append(str)

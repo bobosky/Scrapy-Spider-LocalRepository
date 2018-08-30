@@ -22,12 +22,16 @@ NEWSPIDER_MODULE = 'travellerSP.spiders'
 ROBOTSTXT_OBEY = False
 COMPRESSION_ENABLED = False
 STORE_PATH = r'C:\Users\Administrator\Desktop\code\Scrapy-Spider-LocalRepository\TravellerSP\Result'
-FILE_SIZE = 1677
+FILE_SIZE = 2000
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 2
 
 LOG_ENABLED = True
+
+RETRY_ENABLED = True
+# RETRY_HTTP_CODES = [500]
+RETRY_TIMES = 20
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -58,7 +62,9 @@ CONCURRENT_REQUESTS_PER_IP = 5
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'travellerSP.middlewares.GetDownloadMiddleware': 901,
+   # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
+   # 'travellerSP.middlewares.ProxyMiddleWare': 750,
+   'travellerSP.middlewares.GetDownloadMiddleware': 901
    # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
 

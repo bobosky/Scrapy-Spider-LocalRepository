@@ -182,9 +182,24 @@ param22 = {
 # url = 'http://you.ctrip.com/destinationsite/TTDSecond/SharedView/AsynCommentView'
 # html = requests.post(url=url,data=param22,headers=headers)
 # print(html.text)
+#
+# import pandas as pd
+# f = pd.ExcelWriter('output.xlsx')
+# df = pd.DataFrame(data={'test':{3:'zhuzhi',"rrr":'dddf'},'ffff':{3:'dddf','rrr':'3fff'}})
+# df.to_excel(f,'Sheet1')
+# f.save()
 
-import pandas as pd
-f = pd.ExcelWriter('output.xlsx')
-df = pd.DataFrame(data={'test':{3:'zhuzhi',"rrr":'dddf'},'ffff':{3:'dddf','rrr':'3fff'}})
-df.to_excel(f,'Sheet1')
-f.save()
+
+from travellerSP.helper import Redis_proxy
+import random
+from lxml import etree
+p = Redis_proxy()
+ip = random.choice(p.run())
+
+
+proxy = {'https':'https://'+ip,'http':'http://'+ip}
+print(proxy)
+# html = requests.get(url='http://www.ip38.com/',headers=headers,proxies = proxy).text
+html = requests.get(url='http://www.ip38.com/',headers=headers).text
+
+print(html)

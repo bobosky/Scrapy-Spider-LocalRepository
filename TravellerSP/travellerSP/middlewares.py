@@ -6,9 +6,11 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from scrapy.http import HtmlResponse
+from scrapy.http import HtmlResponse,Request
 from scrapy import log
-import requests
+import requests, random, time, re
+# from scrapy.contrib.downloadermiddleware.httpproxy import HttpProxyMiddleware
+from scrapy.contrib.downloadermiddleware.retry import RetryMiddleware
 
 class PostDownloadMiddleware(object):
 
@@ -42,9 +44,85 @@ class GetDownloadMiddleware(object):
         super(GetDownloadMiddleware, self).__init__()
 
     def process_request(self, request, spider):
+        # proxies = {'http':request.meta['proxy']}
         htmlsorce = requests.get(url=request.url,headers=self.headers)
+        time.sleep(4)
         return HtmlResponse(url=htmlsorce.url,body=htmlsorce.content,headers=htmlsorce.headers,request=request,status=htmlsorce.status_code)
 
+class ProxyMiddleWare(object):
+    proxies = []
+
+    # 请求头是必须的
+    headers = {
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'accept-encoding': 'gzip',  # 只要gzip的压缩格式
+        'accept-language': 'zh-CN,zh;q=0.9',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+    }
+    
+    def __init__(self):
+        super(ProxyMiddleWare, self).__init__()
+    
+    def process_request(self, request, spider):
+        print(self.proxies)
+        if not self.proxies:
+            self.proxies = self.update_proxies()
+        proxy = random.choice(self.proxies)
+        print('使用的随机代理：'+proxy)
+        if not self.verify_proxy(proxy):
+            self.proxies.remove(proxy)
+            print('更新代理池'+self.proxies)
+            return Request(url=request.url,callback=request.callback,request=request,meta=request.meta)
+        else:
+            request.meta['proxy'] = proxy
+            return None
+
+    # def process_response(self, response, spider):
+    #     if not self.proxies:
+    #         self.proxies = self.update_proxies()
+    #     if not response.status_code == 200:
+    #         self.proxies.remove(response.meta['proxy'])
+    #         response.meta['proxy'] = random.choice(self.proxies)
+    #         # HtmlResponse()
+    #         # Request()
+    #         return Request(url=response.url,callback=response.request.callback,meta=response.meta)
+    #     # return HtmlResponse(url=response.url,body=response.content,headers=response.headers,status=response.status_code)
+    #     return response
+
+    def update_proxies(self):
+        print('更新代理池中。。。。。。。。。。')
+        while True:
+            response = requests.get(url='http://s.zdaye.com/?api=201803081111195429&px=1').text
+            if re.findall('<bad>', response):
+                time.sleep(5)
+                continue
+            if re.findall('<html>', response):
+                time.sleep(5)
+                continue
+
+            ips = response.splitlines()
+            for i in range(0,5):
+                tmp = ips[i].split(':')
+                ips[i] = 'http://{ip}:{port}'.format(ip=tmp[0],port=tmp[1])
+            break
+        print('更新代理池完毕',ips)
+        return ips
+
+    def verify_proxy(self,ip):
+        print('验证ip中：'+ip)
+        test_url = 'https://www.baidu.com'
+        proxy = {'http': ip}
+        try:
+            response = requests.get(url=test_url, headers = self.headers, proxies=proxy, timeout=5)
+            if response.status_code == 200:
+                print('有效ip '+ip)
+                return True
+            print('无效ip ' + ip)
+            return False
+        except Exception as e:
+            print(e)
+            print('无效ip ' + ip)
+            return False
 
 
 class TravellerspSpiderMiddleware(object):
