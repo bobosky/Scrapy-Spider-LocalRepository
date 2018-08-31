@@ -6,6 +6,9 @@ from lxml import etree
 from travellerSP.pipelines import saveExcelPipeline,TravellerspPipeline
 from travellerSP.items import SchoolInfoItem
 import travellerSP.helper as help
+from scrapy.contrib.downloadermiddleware.retry import RetryMiddleware
+from scrapy.contrib.downloadermiddleware.httpcompression import HttpCompressionMiddleware
+
 
 class XuexiaoSpider(scrapy.Spider):
     name = 'xuexiao'

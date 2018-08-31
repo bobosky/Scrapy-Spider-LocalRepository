@@ -197,8 +197,11 @@ p = Redis_proxy()
 ip = random.choice(p.run())
 
 
-proxy = {'https':'https://'+ip,'http':'http://'+ip}
-print(proxy)
+proxy = {
+         'https':'https://'+ip,
+         'http':'http://'+ip
+         }
+print(proxy,'\n\n\n\n')
 # html = requests.get(url='http://www.ip38.com/',headers=headers,proxies = proxy).text
 html = requests.get(url='http://www.ip38.com/',headers=headers).text
 
