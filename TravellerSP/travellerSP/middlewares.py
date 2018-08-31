@@ -59,11 +59,6 @@ class ProxyMiddleWare(object):
     def process_request(self, request, spider):
         if not self.proxies:self.update_proxies()
         proxy = random.choice(self.proxies)
-        # if not self.verify_proxy(proxy):
-        #     self.proxies.remove(proxy)
-        #     print('更新代理池'+self.proxies)
-        #     return Request(url=request.url,callback=request.callback,request=request,meta=request.meta)
-        # else:
         request.meta['proxy'] = proxy
         return None
 
