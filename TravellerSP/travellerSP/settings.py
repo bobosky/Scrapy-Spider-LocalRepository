@@ -21,11 +21,12 @@ NEWSPIDER_MODULE = 'travellerSP.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 COMPRESSION_ENABLED = False
-STORE_PATH = r'C:\Users\Administrator\Desktop\code\Scrapy-Spider-LocalRepository\TravellerSP\Result'
+STORE_PATH = r'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/' # for Mac
 FILE_SIZE = 2000
+BUFFER_LEN = 500
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 2
+CONCURRENT_REQUESTS = 20
 
 LOG_ENABLED = True
 
@@ -36,10 +37,10 @@ RETRY_TIMES = 20
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 10
+# DOWNLOAD_DELAY = 10
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
-CONCURRENT_REQUESTS_PER_IP = 5
+CONCURRENT_REQUESTS_PER_IP = 10
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
@@ -67,7 +68,6 @@ DOWNLOADER_MIDDLEWARES = {
    'travellerSP.middlewares.GetDownloadMiddleware': 901
    # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
-
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
@@ -77,7 +77,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'travellerSP.pipelines.saveExcelPipeline': 300,
+   # 'travellerSP.pipelines.saveExcelPipeline': 300,
+   'travellerSP.pipelines.TravellerspPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

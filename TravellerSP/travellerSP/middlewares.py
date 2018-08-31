@@ -6,11 +6,10 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-from scrapy.http import HtmlResponse,Request
+from scrapy.http import HtmlResponse
 from scrapy import log
+from requests.exceptions import ProxyError,ConnectTimeout,ConnectionError,ReadTimeout
 import requests, random, time, re
-# from scrapy.contrib.downloadermiddleware.httpproxy import HttpProxyMiddleware
-from scrapy.contrib.downloadermiddleware.retry import RetryMiddleware
 
 class PostDownloadMiddleware(object):
 
@@ -44,10 +43,18 @@ class GetDownloadMiddleware(object):
         super(GetDownloadMiddleware, self).__init__()
 
     def process_request(self, request, spider):
-        # proxies = {'http':request.meta['proxy']}
-        htmlsorce = requests.get(url=request.url,headers=self.headers)
-        time.sleep(4)
-        return HtmlResponse(url=htmlsorce.url,body=htmlsorce.content,headers=htmlsorce.headers,request=request,status=htmlsorce.status_code)
+        # proxies = {
+        #             'http':'http://{}'.format(request.meta['proxy']),
+        #             'https':'https://{}'.format(request.meta['proxy'])
+        #           }
+        htmlsorce = None
+        try:
+            htmlsorce = requests.get(url=request.url,headers=self.headers, timeout=10)
+            status = htmlsorce.status_code
+        except (ProxyError,ConnectTimeout,ConnectionError,ReadTimeout) as e:
+            print("请求器位置发生报错",e)
+            status = 404
+        return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request, status=status)
 
 class ProxyMiddleWare(object):
     proxies = []
@@ -64,30 +71,26 @@ class ProxyMiddleWare(object):
         super(ProxyMiddleWare, self).__init__()
     
     def process_request(self, request, spider):
-        print(self.proxies)
-        if not self.proxies:
-            self.proxies = self.update_proxies()
+        if not self.proxies:self.update_proxies()
         proxy = random.choice(self.proxies)
-        print('使用的随机代理：'+proxy)
-        if not self.verify_proxy(proxy):
-            self.proxies.remove(proxy)
-            print('更新代理池'+self.proxies)
-            return Request(url=request.url,callback=request.callback,request=request,meta=request.meta)
-        else:
-            request.meta['proxy'] = proxy
-            return None
+        # if not self.verify_proxy(proxy):
+        #     self.proxies.remove(proxy)
+        #     print('更新代理池'+self.proxies)
+        #     return Request(url=request.url,callback=request.callback,request=request,meta=request.meta)
+        # else:
+        request.meta['proxy'] = proxy
+        return None
 
-    # def process_response(self, response, spider):
-    #     if not self.proxies:
-    #         self.proxies = self.update_proxies()
-    #     if not response.status_code == 200:
-    #         self.proxies.remove(response.meta['proxy'])
-    #         response.meta['proxy'] = random.choice(self.proxies)
-    #         # HtmlResponse()
-    #         # Request()
-    #         return Request(url=response.url,callback=response.request.callback,meta=response.meta)
-    #     # return HtmlResponse(url=response.url,body=response.content,headers=response.headers,status=response.status_code)
-    #     return response
+    def process_response(self,request, response, spider):
+        if not self.proxies:self.update_proxies()
+        if not response.status in [200,201,204,206]:
+            self.proxies.remove(response.meta['proxy'])
+            if not self.proxies:self.update_proxies()
+            retryRq = request.copy()
+            retryRq.meta['proxy'] = random.choice(self.proxies)
+            retryRq.dont_filter = True
+            return retryRq
+        return response
 
     def update_proxies(self):
         print('更新代理池中。。。。。。。。。。')
@@ -103,10 +106,10 @@ class ProxyMiddleWare(object):
             ips = response.splitlines()
             for i in range(0,5):
                 tmp = ips[i].split(':')
-                ips[i] = 'http://{ip}:{port}'.format(ip=tmp[0],port=tmp[1])
+                ips[i] = '{ip}:{port}'.format(ip=tmp[0],port=tmp[1])
             break
         print('更新代理池完毕',ips)
-        return ips
+        self.proxies = ips
 
     def verify_proxy(self,ip):
         print('验证ip中：'+ip)

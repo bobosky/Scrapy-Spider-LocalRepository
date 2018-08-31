@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import sys, pandas
+import pandas
 from scrapy.conf import settings
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
@@ -20,7 +20,7 @@ class TravellerspPipeline(object):
 
     def close_spider(self, spider):
         if self.buffer_list:
-            with open('{path}\{cfn}'.format(cfn='{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
+            with open(r'{path}{cfn}'.format(cfn='store.txt', path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
                 f.writelines(self.buffer_list)
                 self.buffer_list.clear()
 
@@ -31,18 +31,17 @@ class TravellerspPipeline(object):
         #     title=item.setdefault('title', ''), ct=item.setdefault('crawlTime', ''),
         #     pt=item.setdefault('publishTime', ''), level=item.setdefault('level', ''),like=item.setdefault('like', ''),
         #     an=item.setdefault('authorName', ''),aid=item.setdefault('authorID', ''), content=item.setdefault('content', ''))
-        str = '《Root》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》'.format(
-            na=item.setdefault('name', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''),
-        )
+        str = '《Root》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》\n'.format(
+            na=item.setdefault('name', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''))
 
-        if not sys.getsizeof(self.buffer_list) > settings.get('FILE_SIZE'):
+        if len(self.buffer_list) <= settings.get('BUFFER_LEN'):
             self.buffer_list.append(str)
         else:
-            self.filename = self.filename + 1
-            with open(r'{path}\{cfn}'.format(cfn=r'{}.txt'.format(self.filename), path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
+            with open(r'{path}{cfn}'.format(cfn=r'store.txt', path=settings.get('STORE_PATH')),'a+',encoding='utf-8') as f:
                 f.writelines(self.buffer_list)
                 self.buffer_list.clear()
 
+            self.buffer_list.append(str)
         return item
 
 class saveExcelPipeline(object):
