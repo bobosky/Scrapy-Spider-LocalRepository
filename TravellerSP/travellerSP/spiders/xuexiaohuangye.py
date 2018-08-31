@@ -28,34 +28,36 @@ class Xuexiaohuangye(scrapy.Spider):
         "黑龙江":['哈尔滨市','齐齐哈尔市','鸡西市','鹤岗市','双鸭山市','大庆市','伊春市','佳木斯市','七台河市','牡丹江市','黑河市','绥化市','大兴安岭地区']
     }
 
-    local1 = ['北京_local1','上海_local1','天津_local1','四川_local1','安徽_local1','江苏_local1','浙江_local1','辽宁_local1','山西_local1','福建_local1','广东_local1','广西_local1','海南_local1','河南_local1','湖南_local1','陕西_local1','湖北_local1','江西_local1','河北_local1','山东_local1','重庆_local1','青海_local1','吉林_local1','云南_local1','贵州_local1','甘肃_local1','宁夏_local1','新疆_local1','西藏_local1','内蒙古_local1','黑龙江_local1']
+    local1 = ['北京','上海','天津','四川','安徽','江苏','浙江','辽宁','山西','福建','广东','广西','海南','河南','湖南','陕西','湖北','江西','河北','山东','重庆','青海','吉林','云南','贵州','甘肃','宁夏','新疆','西藏','内蒙古','黑龙江']
 
-    cengci = ['小学_cengci','初中_cengci','高中_cengci']
+    cengci = ['小学','初中','高中']
 
     def start_requests(self):
         for i in self.local1:
             for j in self.cengci:
-                self.params['local1'] = i
-                self.params['cengci'] = j
+                self.params['local1'] = i+'_local1'
+                self.params['cengci'] = j+'_cengci'
                 self.params['page'] = 1
                 url = 'http://xuexiao.eol.cn/?{}'.format(urlencode(self.params))
-                yield Request(url=url,callback=self.loop_parse)
+                yield Request(url=url,callback=self.loop_parse,meta={'city':i,'lev':j})
 
     def loop_parse(self, response):
         pagebar = response.css('.page p').xpath('string(.)').extract_first()
         lastpage = re.search('共(\d+)页',pagebar).group(1)
         for i in range(1,int(lastpage)+1):
             url = response.url+'&page={}'.format(i)
-            yield Request(url=url,callback=self.analysis)
+            yield Request(url=url,callback=self.analysis,meta={'city':response.meta['city'],'lev':response.meta['lev']})
 
     def analysis(self, response):
         list = response.css('.red_border .right_box')
         for i in list:
             pipeline = SchoolInfoItem()
+            pipeline['city'] = response.meta['city']
+            pipeline['lev'] = response.meta['lev']
             pipeline['name'] = i.xpath('div[1]/h2/a/text()').extract_first().split()[0]
             h3 = i.xpath('h3').extract_first()
             pipeline['address'] = re.search('地址：\s*(\S+)\s+',h3).group(1)
             pipeline['code'] = re.search('邮编：\s*(\d+)\s*',h3).group(1)
-            pipeline['phone'] = re.search('电话：\s*(\S+)\s*',h3).group(1)
+            pipeline['phone'] = re.search('电话：\s*(\S+)\s*<',h3).group(1)
             yield pipeline
 

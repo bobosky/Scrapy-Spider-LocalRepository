@@ -27,6 +27,8 @@ class TravellerspItem(scrapy.Item):
 
 
 class SchoolInfoItem(scrapy.Item):
+    city = scrapy.Field()
+    level = scrapy.Field()
     name = scrapy.Field()
     address = scrapy.Field()
     phone = scrapy.Field()
