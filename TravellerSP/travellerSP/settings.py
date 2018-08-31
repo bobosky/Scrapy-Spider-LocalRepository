@@ -8,20 +8,25 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import platform
 
 BOT_NAME = 'travellerSP'
 
 SPIDER_MODULES = ['travellerSP.spiders']
 NEWSPIDER_MODULE = 'travellerSP.spiders'
 
-
+import platform
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'travellerSP (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 COMPRESSION_ENABLED = False
-STORE_PATH = r'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/' # for Mac
+STORE_PATH_DICT = {
+   'Darwin':r'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/',
+   'Windows': None
+}
+STORE_PATH = STORE_PATH_DICT.get(platform.system()) # for Mac
 FILE_SIZE = 2000
 BUFFER_LEN = 500
 
