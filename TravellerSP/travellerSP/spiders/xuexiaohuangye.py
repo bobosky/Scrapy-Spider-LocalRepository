@@ -14,7 +14,7 @@ class Xuexiaohuangye(scrapy.Spider):
         'cengci':None,
         'page':None,
         'local1':None,      #省份
-        'local2':None       #城市
+        # 'local2':None       #城市
     }
 
     local = {
@@ -33,8 +33,13 @@ class Xuexiaohuangye(scrapy.Spider):
     cengci = ['小学_cengci','初中_cengci','高中_cengci']
 
     def start_requests(self):
-        url = 'http://xuexiao.eol.cn/?cengci=小学_cengci&local1=海南_local1'
-        yield Request(url=url,callback=self.loop_parse)
+        for i in self.local1:
+            for j in self.cengci:
+                self.params['local1'] = i
+                self.params['cengci'] = j
+                self.params['page'] = 1
+                url = 'http://xuexiao.eol.cn/?{}'.format(urlencode(self.params))
+                yield Request(url=url,callback=self.loop_parse)
 
     def loop_parse(self, response):
         pagebar = response.css('.page p').xpath('string(.)').extract_first()
