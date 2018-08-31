@@ -23,8 +23,8 @@ import platform
 ROBOTSTXT_OBEY = False
 COMPRESSION_ENABLED = False
 STORE_PATH_DICT = {
-   'Darwin':r'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/',
-   'Windows': None
+   'Darwin':'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/',
+   'Windows': 'C:\\Users\\Administrator\\Desktop\\code\\Scrapy-Spider-LocalRepository\\TravellerSP\\Result\\'
 }
 STORE_PATH = STORE_PATH_DICT.get(platform.system()) # for Mac
 FILE_SIZE = 2000
