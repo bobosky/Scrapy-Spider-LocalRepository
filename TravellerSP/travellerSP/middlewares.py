@@ -11,33 +11,25 @@ from scrapy import log
 from requests.exceptions import ProxyError,ConnectTimeout,ConnectionError,ReadTimeout
 import requests, random, time, re
 
-class PostDownloadMiddleware(object):
+#请求头是必须的
+headers = {
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'accept-encoding': 'gzip',         #只要gzip的压缩格式
+    'accept-language': 'zh-CN,zh;q=0.9',
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+}
 
-    #请求头是必须的
-    headers = {
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'accept-encoding': 'gzip',         #只要gzip的压缩格式
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
-    }
+class PostDownloadMiddleware(object):
 
     def __init__(self):
         super(PostDownloadMiddleware, self).__init__()
 
     def process_request(self, request, spider):
         log.msg(request.meta['data'],log.INFO)
-        htmlsorce = requests.post(url=request.url,headers=self.headers,data=request.meta['data'])
+        htmlsorce = requests.post(url=request.url,headers=headers,data=request.meta['data'])
         return HtmlResponse(url=htmlsorce.url,body=htmlsorce.content,headers=htmlsorce.headers,request=request,status=htmlsorce.status_code)
 
 class GetDownloadMiddleware(object):
-
-    #请求头是必须的
-    headers = {
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'accept-encoding': 'gzip',         #只要gzip的压缩格式
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
-    }
 
     def __init__(self):
         super(GetDownloadMiddleware, self).__init__()
@@ -49,23 +41,17 @@ class GetDownloadMiddleware(object):
         #           }
         htmlsorce = None
         try:
-            htmlsorce = requests.get(url=request.url,headers=self.headers, timeout=10)
-            status = htmlsorce.status_code
-        except (ProxyError,ConnectTimeout,ConnectionError,ReadTimeout) as e:
-            print("请求器位置发生报错",e)
-            status = 404
-        return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request, status=status)
+            htmlsorce = requests.get(url=request.url,headers=headers, timeout=10)
+        except (ProxyError,ConnectionError) as e:
+            print("请求器位置发生报错: ",e)
+            return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request,status=404)
+        except (ReadTimeout,ConnectTimeout) as e:
+            print("请求器位置发生报错: ",e)
+            return request
+        return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request, status=htmlsorce.status_code)
 
 class ProxyMiddleWare(object):
     proxies = []
-
-    # 请求头是必须的
-    headers = {
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'accept-encoding': 'gzip',  # 只要gzip的压缩格式
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
-    }
     
     def __init__(self):
         super(ProxyMiddleWare, self).__init__()
@@ -116,7 +102,7 @@ class ProxyMiddleWare(object):
         test_url = 'https://www.baidu.com'
         proxy = {'http': ip}
         try:
-            response = requests.get(url=test_url, headers = self.headers, proxies=proxy, timeout=5)
+            response = requests.get(url=test_url, headers = headers, proxies=proxy, timeout=5)
             if response.status_code == 200:
                 print('有效ip '+ip)
                 return True
