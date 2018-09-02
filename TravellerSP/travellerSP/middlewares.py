@@ -5,9 +5,8 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
+from scrapy import signals, log
 from scrapy.http import HtmlResponse
-from scrapy import log
 from requests.exceptions import ProxyError,ConnectTimeout,ConnectionError,ReadTimeout
 import requests, random, time, re
 

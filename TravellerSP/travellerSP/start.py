@@ -6,5 +6,6 @@ from scrapy.cmdline import execute
 # execute('scrapy crawl xiecheng_v2'.split())
 # execute('scrapy crawl xuexiao'.split())
 # execute('scrapy crawl xuexiaohuangye'.split())
-execute('scrapy crawl 51sxue'.split())
+# execute('scrapy crawl 51sxue'.split())
+execute('scrapy crawl gdedu'.split())
 
