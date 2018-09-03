@@ -5,10 +5,10 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
+from scrapy import signals, log
 from scrapy.http import HtmlResponse
-from scrapy import log
 from requests.exceptions import ProxyError,ConnectTimeout,ConnectionError,ReadTimeout
+from urllib3.exceptions import NewConnectionError,MaxRetryError,ConnectionError
 import requests, random, time, re
 
 #请求头是必须的
@@ -42,7 +42,7 @@ class GetDownloadMiddleware(object):
         htmlsorce = None
         try:
             htmlsorce = requests.get(url=request.url,headers=headers, timeout=10)
-        except (ProxyError,ConnectionError) as e:
+        except (ProxyError,ConnectionError,NewConnectionError,MaxRetryError,ConnectionError) as e:
             print("请求器位置发生报错: ",e)
             return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request,status=404)
         except (ReadTimeout,ConnectTimeout) as e:
@@ -65,9 +65,10 @@ class ProxyMiddleWare(object):
     def process_response(self,request, response, spider):
         if not self.proxies:self.update_proxies()
         if not response.status in [200,201,204,206]:
-            self.proxies.remove(response.meta['proxy'])
+            self.verify_proxy(response.meta['proxy'])
             if not self.proxies:self.update_proxies()
             retryRq = request.copy()
+            print(retryRq,request)
             retryRq.meta['proxy'] = random.choice(self.proxies)
             retryRq.dont_filter = True
             return retryRq
@@ -99,13 +100,14 @@ class ProxyMiddleWare(object):
         try:
             response = requests.get(url=test_url, headers = headers, proxies=proxy, timeout=5)
             if response.status_code == 200:
-                print('有效ip '+ip)
+                print(ip,' 仍然有效')
                 return True
-            print('无效ip ' + ip)
+            print(ip, ' 已经无效')
+            self.proxies.remove(ip)
             return False
         except Exception as e:
-            print(e)
-            print('无效ip ' + ip)
+            print(e,ip, ' 已经无效')
+            self.proxies.remove(ip)
             return False
 
 

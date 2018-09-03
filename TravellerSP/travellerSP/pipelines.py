@@ -31,8 +31,8 @@ class TravellerspPipeline(object):
         #     title=item.setdefault('title', ''), ct=item.setdefault('crawlTime', ''),
         #     pt=item.setdefault('publishTime', ''), level=item.setdefault('level', ''),like=item.setdefault('like', ''),
         #     an=item.setdefault('authorName', ''),aid=item.setdefault('authorID', ''), content=item.setdefault('content', ''))
-        str = '《Root》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》\n'.format(
-            na=item.setdefault('name', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''))
+        str = '《Root》《city》{ci}《/city》《level》{le}《\level》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》\n'.format(
+            na=item.setdefault('name', ''),le=item.setdefault('level', ''), ci=item.setdefault('city', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''))
 
         if len(self.buffer_list) <= settings.get('BUFFER_LEN'):
             self.buffer_list.append(str)

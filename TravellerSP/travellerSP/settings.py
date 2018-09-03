@@ -26,8 +26,8 @@ STORE_PATH_DICT = {
    'Darwin':'/Users/Ming/PycharmProjects/Scrapy-Spider_LocalRepository/TravellerSP/ResultPackage/',
    'Windows': 'C:\\Users\\Administrator\\Desktop\\code\\Scrapy-Spider-LocalRepository\\TravellerSP\\Result\\'
 }
-STORE_PATH = STORE_PATH_DICT.get(platform.system()) # for Mac
-FILE_SIZE = 2000
+STORE_PATH = STORE_PATH_DICT.get(platform.system())
+# FILE_SIZE = 2000
 BUFFER_LEN = 500
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
@@ -68,8 +68,8 @@ CONCURRENT_REQUESTS_PER_IP = 10
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
-   # 'travellerSP.middlewares.ProxyMiddleWare': 750,
+   'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
+   'travellerSP.middlewares.ProxyMiddleWare': 750,
    'travellerSP.middlewares.GetDownloadMiddleware': 901
    # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
