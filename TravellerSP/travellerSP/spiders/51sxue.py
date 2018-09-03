@@ -10,12 +10,6 @@ import travellerSP.helper as help
 class sxue(scrapy.Spider):
     name = '51sxue'
 
-    # params = {
-    #     't' : None,   #2-小学  3-中学
-    #     'page' : None
-    # }
-
-
     #http://xuexiao.51sxue.com/slist/?o=&t=3&areaCodeS=12&level=&sp=&score=&order=&areaS=%CC%EC%BD%F2%CA%D0&searchKey=
     def start_requests(self):
         map = {2:1161,3:1334}

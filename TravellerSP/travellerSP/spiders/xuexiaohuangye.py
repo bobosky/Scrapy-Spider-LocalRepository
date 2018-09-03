@@ -53,11 +53,15 @@ class Xuexiaohuangye(scrapy.Spider):
         for i in list:
             pipeline = SchoolInfoItem()
             pipeline['city'] = response.meta['city']
-            pipeline['lev'] = response.meta['lev']
+            pipeline['level'] = response.meta['lev']
             pipeline['name'] = i.xpath('div[1]/h2/a/text()').extract_first().split()[0]
             h3 = i.xpath('h3').extract_first()
-            pipeline['address'] = re.search('地址：\s*(\S+)\s+',h3).group(1)
-            pipeline['code'] = re.search('邮编：\s*(\d+)\s*',h3).group(1)
-            pipeline['phone'] = re.search('电话：\s*(\S+)\s*<',h3).group(1)
+            address = re.search('地址：\s*(\S+)\s+',h3)
+            code = re.search('邮编：\s*(\d+)\s*',h3)
+            phone = re.search('电话：\s*(\S+)\s*<',h3)
+            pipeline['address'] = address.group(1) if address else ''
+            pipeline['code'] = code.group(1) if code else ''
+            pipeline['phone'] = phone.group(1) if phone else ''
+            pipeline['web'] = ''
             yield pipeline
 
