@@ -8,21 +8,27 @@
 from scrapy import signals, log
 from scrapy.http import HtmlResponse
 from requests.exceptions import ProxyError,ConnectTimeout,ConnectionError,ReadTimeout
-from urllib3.exceptions import NewConnectionError,MaxRetryError,ConnectionError
+from urllib3.exceptions import NewConnectionError,MaxRetryError
 import requests, random, time, re
 
 #请求头是必须的
 headers = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-    'accept-encoding': 'gzip',         #只要gzip的压缩格式
-    'accept-language': 'zh-CN,zh;q=0.9',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+    'Accept':'*/*',
+    'Accept-Encoding':'gzip,deflate',
+    'Accept-Language':'zh-CN,zh;q=0.8,en-us;q=0.6,en;q=0.5;q=0.4',
+    'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 MicroMessenger/6.5.2.501 NetType/WIFI WindowsWechat QBCore/3.43.691.400 QQBrowser/9.0.2524.400'
 }
 
 class PostDownloadMiddleware(object):
 
-    def __init__(self):
+    def __init__(self, crawler):
         super(PostDownloadMiddleware, self).__init__()
+        self.crawler = crawler
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        s = cls(crawler)
+        return s
 
     def process_request(self, request, spider):
         log.msg(request.meta['data'],log.INFO)
@@ -31,48 +37,75 @@ class PostDownloadMiddleware(object):
 
 class GetDownloadMiddleware(object):
 
-    def __init__(self):
+    def __init__(self, crawler):
         super(GetDownloadMiddleware, self).__init__()
+        self.crawler = crawler
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        s = cls(crawler)
+        return s
 
     def process_request(self, request, spider):
-        # proxies = {
-        #             'http':'http://{}'.format(request.meta['proxy']),
-        #             'https':'https://{}'.format(request.meta['proxy'])
-        #           }
+        if request.meta['level'] == 1:
+            time.sleep(6)
+        if 'cookies' in request.meta.keys():
+            cookies = request.meta['cookies']
+        else:
+            cookies = None
+
         htmlsorce = None
         try:
-            htmlsorce = requests.get(url=request.url,headers=headers, timeout=10)
-        except (ProxyError,ConnectionError,NewConnectionError,MaxRetryError,ConnectionError) as e:
-            print("请求器位置发生报错: ",e)
-            return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request,status=404)
+            htmlsorce = requests.get(url=request.url, headers=headers, cookies=cookies, verify=False, timeout=10)
         except (ReadTimeout,ConnectTimeout) as e:
             print("请求器位置发生报错: ",e)
             return request
+        except (NewConnectionError,ConnectionError) as e:
+            print("请求器位置发生报错: ",e)
+            # 触发爬虫关闭
+            self.crawler.engine.close_spider(spider, '>>>>网络失去连接<<<<')
         return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request, status=htmlsorce.status_code)
 
 class ProxyMiddleWare(object):
     proxies = []
-    
-    def __init__(self):
+
+    def __init__(self, crawler):
         super(ProxyMiddleWare, self).__init__()
+        self.crawler = crawler
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        s = cls(crawler)
+        return s
     
     def process_request(self, request, spider):
         if not self.proxies:self.update_proxies()
         proxy = random.choice(self.proxies)
-        request.meta['proxy'] = proxy
-        return None
+        proxies = {'http':'http://{}'.format(proxy), 'https':'https://{}'.format(proxy)}
+        htmlsorce = None
+        try:
+            htmlsorce = requests.get(url=request.url, headers=headers, proxies=proxies, timeout=10)
+        except (ProxyError, MaxRetryError) as e:
+            print("请求器位置发生报错: ", e)
+            if self.verify_proxy(proxy):
+                pass
+            else:
+                self.proxies.remove(proxy)
+            request.dont_filter = True
+            return request
+        except (ReadTimeout, ConnectTimeout) as e:
+            print("请求器位置发生报错: ", e)
+            request.dont_filter = True
+            return request
+        except (NewConnectionError, ConnectionError) as e:
+            print("请求器位置发生报错: ", e)
+            # 主动触发爬虫关闭
+            self.crawler.engine.close_spider(spider, '>>>>网络失去连接<<<<')
 
-    def process_response(self,request, response, spider):
-        if not self.proxies:self.update_proxies()
-        if not response.status in [200,201,204,206]:
-            self.verify_proxy(response.meta['proxy'])
-            if not self.proxies:self.update_proxies()
-            retryRq = request.copy()
-            print(retryRq,request)
-            retryRq.meta['proxy'] = random.choice(self.proxies)
-            retryRq.dont_filter = True
-            return retryRq
-        return response
+        if not htmlsorce.status_code in [200,201,204,206]:
+            request.dont_filter = True
+            return request
+        return HtmlResponse(url=htmlsorce.url, body=htmlsorce.content, headers=htmlsorce.headers, request=request, status=htmlsorce.status_code)
 
     def update_proxies(self):
         print('更新代理池中。。。。。。。。。。')
@@ -103,104 +136,8 @@ class ProxyMiddleWare(object):
                 print(ip,' 仍然有效')
                 return True
             print(ip, ' 已经无效')
-            self.proxies.remove(ip)
             return False
         except Exception as e:
             print(e,ip, ' 已经无效')
-            self.proxies.remove(ip)
             return False
 
-
-class TravellerspSpiderMiddleware(object):
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the spider middleware does not modify the
-    # passed objects.
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
-    def process_spider_input(self, response, spider):
-        # Called for each response that goes through the spider
-        # middleware and into the spider.
-
-        # Should return None or raise an exception.
-        return None
-
-    def process_spider_output(self, response, result, spider):
-        # Called with the results returned from the Spider, after
-        # it has processed the response.
-
-        # Must return an iterable of Request, dict or Item objects.
-        for i in result:
-            yield i
-
-    def process_spider_exception(self, response, exception, spider):
-        # Called when a spider or process_spider_input() method
-        # (from other spider middleware) raises an exception.
-
-        # Should return either None or an iterable of Response, dict
-        # or Item objects.
-        pass
-
-    def process_start_requests(self, start_requests, spider):
-        # Called with the start requests of the spider, and works
-        # similarly to the process_spider_output() method, except
-        # that it doesn’t have a response associated.
-
-        # Must return only requests (not items).
-        for r in start_requests:
-            yield r
-
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
-
-
-class TravellerspDownloaderMiddleware(object):
-    # Not all methods need to be defined. If a method is not defined,
-    # scrapy acts as if the downloader middleware does not modify the
-    # passed objects.
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        # This method is used by Scrapy to create your spiders.
-        s = cls()
-        crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
-        return s
-
-    def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware.
-
-        # Must either:
-        # - return None: continue processing this request
-        # - or return a Response object
-        # - or return a Request object
-        # - or raise IgnoreRequest: process_exception() methods of
-        #   installed downloader middleware will be called
-        return None
-
-    def process_response(self, request, response, spider):
-        # Called with the response returned from the downloader.
-
-        # Must either;
-        # - return a Response object
-        # - return a Request object
-        # - or raise IgnoreRequest
-        return response
-
-    def process_exception(self, request, exception, spider):
-        # Called when a download handler or a process_request()
-        # (from other downloader middleware) raises an exception.
-
-        # Must either:
-        # - return None: continue processing this exception
-        # - return a Response object: stops process_exception() chain
-        # - return a Request object: stops process_exception() chain
-        pass
-
-    def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)

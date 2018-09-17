@@ -31,9 +31,12 @@ class TravellerspPipeline(object):
         #     title=item.setdefault('title', ''), ct=item.setdefault('crawlTime', ''),
         #     pt=item.setdefault('publishTime', ''), level=item.setdefault('level', ''),like=item.setdefault('like', ''),
         #     an=item.setdefault('authorName', ''),aid=item.setdefault('authorID', ''), content=item.setdefault('content', ''))
-        str = '《Root》《city》{ci}《/city》《level》{le}《\level》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》\n'.format(
-            na=item.setdefault('name', ''),le=item.setdefault('level', ''), ci=item.setdefault('city', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''))
 
+        # str = '《Root》《city》{ci}《/city》《level》{le}《\level》《name》{na}《/name》《address》{ad}《/address》《phone》{ph}《/phone》《code》{co}《/code》《web》{we}《/web》《/Root》\n'.format(
+        #     na=item.setdefault('name', ''),le=item.setdefault('level', ''), ci=item.setdefault('city', ''),ad=item.setdefault('address', ''),ph=item.setdefault('phone', ''),co=item.setdefault('code', ''),we=item.setdefault('web', ''))
+
+        str = '《Root》《name》{na}《/name》《title》{ti}《/title》《publishtime》{pu}《/publishtime》《crawtime》{ct}《/crawtime》《content》{con}《/content》《/Root》\n'.format(
+            ti=item.setdefault('title', ''),na=item.setdefault('name',''),con=item.setdefault('content', ''), pu=item.setdefault('publish_time', ''),ct=item.setdefault('crawlTime', ''))
         if len(self.buffer_list) <= settings.get('BUFFER_LEN'):
             self.buffer_list.append(str)
         else:

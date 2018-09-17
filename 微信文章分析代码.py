@@ -23,14 +23,17 @@ headers = {
     'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 MicroMessenger/6.5.2.501 NetType/WIFI WindowsWechat QBCore/3.43.691.400 QQBrowser/9.0.2524.400'
 }
 
+
 dictf = {
-    'pass_ticket':'J37qRTyh9BgWRexEgpjr7xCdHCqvrl/goG5siudeUY4hBoVjS8NeawDmrUQi//BX',
-    'wap_sid2':'CLKz0K8FElxPVFpSVnI1djBHWUFjOGpsR3NJN1VhUGJIY05tU2hXcUxRQUxwT1p0ZkZTWnhOWkR6dnFqbWhGdjBQbHd5c0R3TE5FM1FCR2k0cWI2QS00YkhyQVlpczREQUFBfjC5uu3cBTgNQJVO',
-    # 'wap_sid2': 'CLKz0K8FElxxbEY0aUY2SmkwWXI3Z1VIazJRby14YmQxWGJ3aWJlWXY4Y1oyR19yZGtBSFNhdll5cTZwSmZJU2UwSzBZdnpfZ3BoN1k4dlplb2NheDF5Vlg2djlVTTREQUFBfjDUuejcBTgNQAE=',
-    'read-comment':'CLKz0K8FElxxbEY0aUY2SmkwWXI3Z1VIazJRby01TlNtX1ZnOVhoc29JWFYtVi1ESWxrVlI3Uk1DR25aYTNsdEpaZzhqNnVFdjNhaWkzcDJQN1ViYkZxREVUT3FhODREQUFBfjDQouncBTgNQAE=',
-    'appmsg_token':'974_LRCAbvBRpNUBqjqLW1RDPstdMx-B2BeZRf04lw~~',
-    'wxuin':'1442060722',
-    '__biz':'MzA3MDA0OTQwMw==',                                                              # (公众号代号)
+    # 式用 所有 公众号
+    'pass_ticket': 'w5vSzCjsANcqLx/bnjCtGdasYgH+a582Oic3iEpu3Xjb4vU5y9A7BTLlHIZKAkED',
+    # 适用 当前 公众号
+    'wap_sid2': 'CLKz0K8FEnBfY01RUUZEM3NuV2pOVTlXS3V6SkFHRDdtTVFYMjh4MWRSU0J5SzlEV2hDLWdUMkpRSGhwZ21IbHFaWE1WdHhfXy1DSUJJMUhYZ2hka1RUZWxSM0h1ck1fR2ZTU0RDUXM1YVpicWoxbldhVE9Bd0FBMJmI9NwFOA1AlU4=',
+    # 适用 当前 公众号
+    'appmsg_token': '974_6QbmkJilF7RgZLsXe0olnDxkHTteHk9r0DNNfQ~~',
+    'wxuin': '1442060722',
+    # 适用 当前 公众号
+    '__biz': 'MzA3MDA0OTQwMw==',
     'uin': 'MTQ0MjA2MDcyMg==',
     'key':'8db9fc3d3842e0482878996fa864570398eb381434ff479d6fbe97ce00a90e69bc45ea270721991f5400dcb2d69bbfcf506443e55dcf18fee50929e401b7b27cc4ef124d06bb9eac77f2ef25129b5b3e'
 }
@@ -49,7 +52,7 @@ cook = {
 pars = {
     'action':'getmsg',
     '__biz':dictf['__biz'], #(公众号代号)        #与文章的__biz一致
-    'offset':0,
+    'offset':170,
     'is_ok':'1',
     # 'uin':'777',
     # 'key':'777',
@@ -117,6 +120,8 @@ parsconm = {
     'f':'json'
 }
 
+
+
 listurl = 'https://mp.weixin.qq.com/mp/profile_ext?{}'.format(geturl(pars))
 articleurl = 'https://mp.weixin.qq.com/s?{}'.format(geturl(parsarticle))
 readurl = 'https://mp.weixin.qq.com/mp/getappmsgext?{}'.format(geturl(parsread))
@@ -126,6 +131,7 @@ readurl = 'https://mp.weixin.qq.com/mp/getappmsgext?{}'.format(geturl(parsread))
 print(listurl)
 html = requests.get(url=listurl,headers=headers,cookies=cook,verify=False)
 print(html.text)
+print(html.request)
 
 # print(articleurl)
 # html = requests.get(url=articleurl,headers=headers,cookies=cook,verify=False)

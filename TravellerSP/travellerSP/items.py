@@ -34,3 +34,11 @@ class SchoolInfoItem(scrapy.Item):
     phone = scrapy.Field()
     code = scrapy.Field()
     web = scrapy.Field()
+
+
+class WeixinItem(scrapy.Item):
+    name = scrapy.Field()
+    title = scrapy.Field()
+    content = scrapy.Field()
+    publish_time = scrapy.Field()
+    crawlTime = scrapy.Field()
