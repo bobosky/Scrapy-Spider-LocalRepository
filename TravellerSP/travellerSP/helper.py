@@ -7,6 +7,13 @@ def get_locationtime():
 def get_createtime(secs):
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(int(secs)))
 
+def getUrlWithPars(dict):
+    str = []
+    for i in dict.keys():
+        tmp = '{key}={val}'.format(key=i,val=dict[i])
+        str.append(tmp)
+    return '&'.join(str)
+
 class Redis_proxy:
     # def __init__(self):
     #     self.pool = redis.ConnectionPool(max_connections=5,host='13.230.98.46',port=6379)

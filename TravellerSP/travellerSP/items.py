@@ -42,3 +42,11 @@ class WeixinItem(scrapy.Item):
     content = scrapy.Field()
     publish_time = scrapy.Field()
     crawlTime = scrapy.Field()
+
+class Yihaodian(scrapy.Item):
+    name =scrapy.Field()
+    userid = scrapy.Field()
+    star = scrapy.Field()
+    date = scrapy.Field()
+    crawlTime = scrapy.Field()
+    content = scrapy.Field()

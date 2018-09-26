@@ -47,16 +47,28 @@ class GetDownloadMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        if request.meta['level'] == 1:
-            time.sleep(6)
+        if 'wait' in request.meta.keys():
+            if not request.meta['wait'] == 0:
+                time.sleep(request.meta['wait'])
+
         if 'cookies' in request.meta.keys():
             cookies = request.meta['cookies']
         else:
             cookies = None
 
+        if 'headers' in request.meta.keys():
+            headers = request.meta['headers']
+        else:
+            headers = None
+
+        if 'timeout' in request.meta.keys():
+            timeout = request.meta['timeout']
+        else:
+            timeout = None
+
         htmlsorce = None
         try:
-            htmlsorce = requests.get(url=request.url, headers=headers, cookies=cookies, verify=False, timeout=10)
+            htmlsorce = requests.get(url=request.url, headers=headers, cookies=cookies, verify=False, timeout=timeout)
         except (ReadTimeout,ConnectTimeout) as e:
             print("请求器位置发生报错: ",e)
             return request
@@ -82,9 +94,29 @@ class ProxyMiddleWare(object):
         if not self.proxies:self.update_proxies()
         proxy = random.choice(self.proxies)
         proxies = {'http':'http://{}'.format(proxy), 'https':'https://{}'.format(proxy)}
+
+        if 'wait' in request.meta.keys():
+            if not requests.meta['wait'] == 0:
+                time.sleep(requests.meta['wait'])
+
+        if 'cookies' in request.meta.keys():
+            cookies = request.meta['cookies']
+        else:
+            cookies = None
+
+        if 'headers' in request.meta.keys():
+            headers = request.meta['headers']
+        else:
+            headers = None
+
+        if 'timeout' in request.meta.keys():
+            timeout = request.meta['timeout']
+        else:
+            timeout = None
+
         htmlsorce = None
         try:
-            htmlsorce = requests.get(url=request.url, headers=headers, proxies=proxies, timeout=10)
+            htmlsorce = requests.get(url=request.url, headers=headers, proxies=proxies, cookies=cookies, verify=False, timeout=timeout)
         except (ProxyError, MaxRetryError) as e:
             print("请求器位置发生报错: ", e)
             if self.verify_proxy(proxy):

@@ -3532,8 +3532,8 @@ function getdatapeople(urlname, urltitle, content, rval) {
         return true;
     }
 }
-//china.com.cn
-function getdatachina(urlname, urltitle, content, rval) {
+//china.com.cn 中国网
+function getdatachinacn(urlname, urltitle, content, rval) {
     if (urlname.indexOf('people.com.cn') < 0) return false;
     if (urlname.search(/auto\.people\.com\.cn\/n1/) > 0) {
         var strcom = getstrinser(urlname, 'n1/', '.html');
@@ -3560,46 +3560,1935 @@ function getdatachina(urlname, urltitle, content, rval) {
     }
 }
 //cn2che.com
-function getdatachina(urlname, urltitle, content, rval) {
-    if (urlname.indexOf('people.com.cn') < 0) return false;
-    if (urlname.search(/auto\.people\.com\.cn\/n1/) > 0) {
-        var strcom = getstrinser(urlname, 'n1/', '.html');
-        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国网', 'S2') + printstr('文章', 'S3a');
+function getdatacn2che(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('cn2che.com') < 0) return false;
+    if (urlname.search(/news\.cn2che\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('二手车', 'S2') + printstr('文章', 'S3a');
         // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
-        strtotal += printstr(getstrinser(content, '<span class="cxz c f1">', '</span>'), 'S3d')
-        var strq1 = getstrinser(content, 'id="fontzoom">', '</div">');
+        strtotal += printstr(getstrinser(content, '<h1 class="position">', '</h1>'), 'S3d')
+        var strq1 = getstrinser(content, '<div class="article">', '</div">');
         if (strq1 == "") return false;
         strtotal += printstr(strq1, 'Q1');
-        var strs4 = getstrinser(content, '<h1 class="toph1">', '</h1>');
+        var strs4 = getstrinser(content, '<div class="newstitle">', '</h1>');
         if (strs4 == "") return false;
         strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
         // var tmps6 = getstrinser(content, '<dd>', '</dd>');
-        var strs6 = getstrinser(content, '<div class="f1 time2">', '</div>');
+        var strs6 = getstrinser(content, '<h3><span>', '</span>');
         if (strs6 == "") return false;
         strs6 = timetrtostdstr(strs6);
         strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
-        // var strg1 = getstrinser(content, '<span id="endSource">', '</span>');
-        // if (strg1 == "") strg1 = " ";
+        var strg1 = getstrinser(content, '责任编辑：', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//zjrxz.com
+function getzjrxz(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('zjrxz.com') < 0) return false;
+    if (urlname.search(/zjrxz\.com\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'html/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('浙江在线', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="crumb">', '</div>'), 'S3d')
+        var strq1 = getstrinser(content, '<div class="article-content fontSizeSmall">', '<script>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, '<h1 class="article-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<dd>', '</dd>');
+        var strs6 = getstrinser(content, '<span class="date">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '责任编辑：', '</span>');
+        // if (strg1 == "") return false;
         strtotal += printstr('', 'G1');
         rval.content += printstr(strtotal, 'Root') + '\r\n';
         return true;
     }
 }
+//chinanews.com
+function getdatachinanews(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('chinanews.com') < 0) return false;
+    if (urlname.search(/chinanews\.com\/auto\/\d{4}/) > 0) {
+        var strcom = getstrinser(urlname, 'auto/', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国新闻网', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div id="nav">', '</div>'), 'S3d')
+        var strq1 = getstrinser(content, '<div class="left_zw" style="position:relative">', '<table');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, 'position:relative; text-align:center; clear:both">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        // var tmps6 = getstrinser(content, '<dd>', '</dd>');
+        var strs6 = getstrinser(content, '<div class="left-t" style="padding-left:6px;">', '<a');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '责任编辑：', '</span>');
+        // if (strg1 == "") return false;
+        strtotal += printstr('中国新闻网', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/chinanews\.com\/news\/\d{4}/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国新闻网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d')
+        var strq1 = getstrinser(content, '<div class=" branch_con_text">', '<div class="bianji">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var tmptitle = getstrinser(content, 'branch_con_title">', '</div>')
+        var strs4 = getstrinser(tmptitle, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(tmptitle, '<span>', '来源');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmptitle, '来源：', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//auto.cri.cn
+function getdatacri(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('auto.cri.cn') < 0) return false;
+    if (urlname.search(/auto\.cri\.cn\/\d{8}/) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('国际在线汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr('', 'S3d')
+        var strq1 = getstrinser(content, '<div id="abody" class="abody" pagedata="">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, 'class="atitle">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        // var tmps6 = getstrinser(content, '<dd>', '</dd>');
+        var strs6 = getstrinser(content, 'class="apublishtime">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, 'class="asource">', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//auto.gxnews.com.cn
+function getdatagxnews(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('auto.gxnews.com.cn') < 0) return false;
+    if (urlname.search(/auto\.gxnews\.com\.cn/) > 0) {
+        var strcom = getstrinser(urlname, 'newgx', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('广西新闻网', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '您当前的位置：</strong>', '</span>'),'S3d')
+        var strq1 = getstrinser(content, '<div class="article-content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(title, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var tmps6 = getstrinser(content, '<div class="article-info">', '</div>');
+        var strs6 = getstrinser(tmps6, '<span>', '来源');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源：', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//xinhuanet.com
+function getdataxinhuanet(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('xinhuanet.com') < 0) return false;
+    if (urlname.search(/xinhuanet\.com\/auto/) > 0) {
+        var strcom = getstrinser(urlname, 'c_', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('新华汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="news-position">', '</div>'),'S3d')
+        var strq1 = getstrinser(content, '<div id="p-detail">', '<div class="l-ad-1">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<div class="h-title">', '</div>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(content, '<span class="h-time">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<em id="source">', '</em>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/xinhuanet\.com\/info/) > 0) {
+        var strcom = getstrinser(urlname, 'c_', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('新华汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<span class="curDiv clearfix">', '<div class="search">'),'S3d')
+        var strq1 = getstrinser(content, '<div class="article">', '<div id="articleEdit">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<h1 id="title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(content, '<span class="time">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<em id="source">', '</em>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//qx162.com
+function getdataqx162(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('qx162.com') < 0) return false;
+    if (urlname.search(/news\.qx162\.com\/qc/) > 0) {
+        var strcom = getstrinser(urlname, 'qc/', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('黔讯网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="position">', '</div>'),'S3d')
+        var strq1 = getstrinser(content, '<span id="zoom">', '</span>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<title>', '</title>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(content, '<div class="lei"><div class="zuoze">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '<');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//zuinow.com
+function getdatazuinow(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('zuinow.com') < 0) return false;
+    if (urlname.search(/zuinow\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'com/n', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('最新网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr('','S3d')
+        var strq1 = getstrinser(content, '<div itemprop="articleBody">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '原标题：', '</');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(content, '时间：', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//chextx.com
+function getdatachextx(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('chextx.com') < 0) return false;
+    if (urlname.search(/chextx\.com\/News\/news\/aid/) > 0) {
+        var strcom = getstrinser(urlname, 'aid/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('车行天下', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="breadnav left">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var tmps6 = getstrinser(content, '<div class="title">', '</div>');
+        var strs4 = getstrinser(tmps6, '<h2>', '</h2>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs = getstrinser(tmps6, '<p>', '<span>来源');
+        var strs6 = getstrinser(strs, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//china.com 中华网
+function getdatachina(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('china.com') < 0) return false;
+    if (urlname.search(/auto\.china\.com\/\w+\/\w+\//) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中华网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div id="chan_breadcrumbs">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div id="chan_newsDetail">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<h1 id="chan_newsTitle">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var tmps6 = getstrinser(content, '<div id="chan_newsInfo">', '<span class="chan_newsInfo_comment">');
 
+        var strs6 = getstrinser(tmps6, '</div>', '<a>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, 'target="_blank">', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//e23.cn
+function getdatae23cn(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('e23.cn') < 0) return false;
+    if (urlname.search(/car\.e23\.cn\/content/) > 0) {
+        var strcom = getstrinser(urlname, 'content/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('舜网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="t_left h12">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="h16">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<div id="endSummary">', '</div>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var tmps6 = getstrinser(content, '<div class="artInfo h12">', '</div>');
 
+        var strs6 = getstrinser(tmps6, '</span><span>', '</span><span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, 'target="_blank">', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('http://www.e23.cn', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//ce.cn
+function getdatacecn(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('ce.cn') < 0) return false;
+    if (urlname.search(/auto\.ce\.cn\/\w+\//) > 0) {
+        var strcom = getstrinser(urlname, '/t', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国经济网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<td bgcolor="#FFFFFF">', '</td>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="Custom_UnionStyle">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        // var title = getstrinser(content, '<div class="article">', '<div class="article-info">')
+        var strs4 = getstrinser(content, '<h1 id="articleTitle">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
 
+        var strs6 = getstrinser(content, '<span id="articleTime">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<span id="articleSource">', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//hyqcw.con
+function getdatahyqcw(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('hyqcw.com') < 0) return false;
+    if (urlname.search(/(www|car)\.hyqcw\.com\/(car|qiche)\//) > 0) {
+        var strcom = getstrinser(urlname, 'car/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('投资中国汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="n-text">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="content showp"', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var title = getstrinser(content, '<div class="title">', '</div>');
+        var strs4 = getstrinser(title, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<small>时间:</small>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<small>来源:</small>', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//cnfol.com
+function getdatacnfol(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('cnfol.com') < 0) return false;
+    if (urlname.search(/(auto|news)\.cnfol\.com\//) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中金在线汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="LocalUl">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="Article">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, '<h3 class="artTitle">', '</h3>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+        var tmp = getstrinser(content, '<div class="artDes">', '</div>');
+        var strs = getstrinser(tmp, '</a>', '</span>来源:');
+        var strs6 = getstrinser(strs, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<span>来源:', '</span>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//3158.cn
+function getdata3158(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('3158.cn') < 0) return false;
+    if (urlname.search(/zhanhui\.3158\.cn\//) > 0) {
+        var strcom = getstrinser(urlname, 'zhxx/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('3158招商加盟网', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="breadcrumb">', '</div>'),'S3d');
+        var strq1 = getstrinser(content, '<div class="content_bd">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, '<h2 class="tit">', '</h2>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+        // var tmp = getstrinser(content, '<div class="artDes">', '</div>');
+        // var strs = getstrinser(tmp, '</a>', '</span>来源:');
+        var strs6 = getstrinser(strs, '展会日期 :', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '<span>来源:', '</span>');
+        // if (strg1 == "") return false;
+        strtotal += printstr('3158招商加盟网', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//southcn.com
+function getdatasouthcn(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('southcn.com') < 0) return false;
+    if (urlname.search(/(cz|car|tech)\.southcn\.com\//) > 0) {
+        var strcom = getstrinser(urlname, 'content_', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('南方网汽车', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<div class="m-crm g-wp">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, 'id="content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(content, '<h2 id="article_title">', '</h2>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+        // var tmp = getstrinser(content, '<div class="artDes">', '</div>');
+        // var strs = getstrinser(tmp, '</a>', '</span>来源:');
+        var strs6 = getstrinser(strs, 'id="pubtime_baidu">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, 'id="source_baidu">来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//hgitv.com
+function getdatahgitv(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('hgitv.com') < 0) return false;
+    if (urlname.search(/hgitv\.com\/car/) > 0) {
+        var strcom = getstrinser(urlname, 'car/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('黄冈新视窗', 'S2') + printstr('文章', 'S3a');
+        // var tmps3d = getstrinser(content, '<div class="tit2">', '</div>');
+        strtotal += printstr(getstrinser(content, '<p class="list_left_dh">', '</p>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="content_text_main">', '<div class');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var tmps4 = getstrinser(content, '<div class="content">', '<p class="content_p1">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+        // var tmp = getstrinser(content, '<div class="artDes">', '</div>');
+        // var strs = getstrinser(tmp, '</a>', '</span>来源:');
+        var strs6 = getstrinser(strs, '时间：', '文章已被浏览');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '编辑：', '时间');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//hinews.cn
+function getdatahinews(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('hinews.cn') < 0) return false;
+    if (urlname.search(/auto\.hinews\.cn/) > 0) {
+        var strcom = getstrinser(urlname, 'xuh=', '');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('南海网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<h5>', '</h5>'), 'S3d');
+        var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(tmpq1, '</h6>', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+        var strs4 = getstrinser(tmpq1, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+        var strs6 = getstrinser(tmpq1, '<h6>', '</h6>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '编辑：', '时间');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//0752qc.com
+function getdata0752qc(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('0752qc.com') < 0) return false;
+    if (urlname.search(/news\.0752qc\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'news-', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('惠州汽车网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="NewsLocation black12">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="newscon">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="info">', '<p class="newstime">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        var strs6 = getstrinser(tmps6, '</a>', '来源');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, 'target="_blank">', '</a>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//tuxi.com.cn
+function getdatatuxi(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('tuxi.com.cn') < 0) return false;
+    if (urlname.search(/news\.tuxi\.com\.cn\/(viewtt|news)/) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('突袭资讯汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '当前位置 : ', '</span>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, 'id="post-txt">', '<div class="clearfix">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="post-main fl o">', '<div class="post-meta clearfix">')
+        var strs4 = getstrinser(tmps4, '<h2>', '</h2>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        // var strs6 = getstrinser(tmps6, '</a>', '来源');
+        // if (strs6 == "") return false;
+        // strs6 = timetrtostdstr(strs6);
+        strtotal += printstr('', 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, 'class="author">', '</a>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/yingyu\.tuxi\.com\.cn\/ttviewt/) > 0) {
+        var strcom = getstrinser(urlname, 'ttviewt/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('突袭资讯汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="path fl">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="artical">', '<div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="main_news_l fl">', '<div class="detail">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        // var strs6 = getstrinser(tmps6, '</a>', '来源');
+        // if (strs6 == "") return false;
+        // strs6 = timetrtostdstr(strs6);
+        strtotal += printstr('', 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '<em class="editor">责任编辑：', '</em>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/tuxi\.com\.cn\/html/) > 0) {
+        var strcom = getstrinser(urlname, 'html/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('突袭资讯汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="con_posi_tag">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, 'class="article-content">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="articlewrap">', '<div class="article-info">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        // var strs6 = getstrinser(tmps6, '</a>', '来源');
+        // if (strs6 == "") return false;
+        // strs6 = timetrtostdstr(strs6);
+        strtotal += printstr('', 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        tmpg1 = getstrinser(content, '<div class="article-info">', '</div>')
+        var strg1 = getstrinser(tmpg1, '<em class="blue">', '</em>');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//315che.com
+function getdata315che(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('315che.com') < 0) return false;
+    if (urlname.search(/inf\.315che\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'n/', '');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国汽车消费网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '您现在的位置：', '</p>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="article-content">', '<div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<div class="info">', '<p class="newstime">')
+        var strs4 = getstrinser(content, '<h1 class="article-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        var strs6 = getstrinser(content, '<span class="fcgray post-time">', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '<span class="fcgray">责任编辑：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//qc188.com
+function getdataqc188(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('qc188.com') < 0) return false;
+    if (urlname.search(/club\.qc188\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'thread-', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车江湖网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="z">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<td class="t_f" id="postmessage', '</td>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<div class="info">', '<p class="newstime">')
+        var strs4 = getstrinser(content, 'id="thread_subject">', '</a>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<p class="newstime">', '</p>')
+        var strs6 = getstrinser(content, '>发表于 ', '</em>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, '<span class="fcgray">责任编辑：', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/qc188\.com\/(ztdg|qczs|dbdg|pcsj|news|cwcs)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车江湖网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="nav">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="info">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="content">', '<p class="txt">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<div class="txt">', '</div>')
+        var strs6 = getstrinser(tmps6, '纠错</a>', '<span id="Author">');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '作者：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/qc188\.com\/xiangjie/) > 0) {
+        var strcom = getstrinser(urlname, 'xiangjie/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车江湖网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '您现在的位置：', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="news">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="news_title">', '</div>')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<div class="txt">', '</div>')
+        // var strs6 = getstrinser(tmps6, '纠错</a>', '<span id="Author">');
+        // if (strs6 == "") return false;
+        // strs6 = timetrtostdstr(strs6);
+        strtotal += printstr('', 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '作者：', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//365jia.cn
+function getdata365jia(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('365jia.cn') < 0) return false;
+    if (urlname.search(/auto\.365jia\.cn\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('万家汽车网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<span class="fz14 di vb">', '</span>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="newscon">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="info">', '<p class="newstime">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, 'class="mr10">', '</')
+        strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//dzwww.com
+function getdatadzwww(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('dzwww.com') < 0) return false;
+    if (urlname.search(/dzwww\.com\/(news|cw|dg)/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('大众网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="add">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="TRS_Editor">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="layout">', '<div class="right">')
+        var strs4 = getstrinser(tmps4, '<h2>', '</h2>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(tmps4, 'class="left">', '来源')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps4, '来源：', '作者');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/auto\.dzwww\.com\/data\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'storys_', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('大众网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '当前位置：', '</p>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="ina_content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="ina_news_text">', '<div class="ina_author">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(tmps4, 'class="ina_data">', '</')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(tmps4, '<span class="ina_source">', '</span>');
+        var strg1 = getstrinser(tmpg1, '">', '</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/\w+\.dzwww\.com\/(qcsx|qc)/) > 0) {
+        var strcom = getstrinser(urlname, '/t', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('大众网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="add">', '</div>'), 'S3d');
+        // var tmpq1 = getstrinser(content, '<div class="item">', '</div>')
+        var strq1 = getstrinser(content, '<div class="TRS_Editor">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="top">', '<p>')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, 'fabutime-->', '<')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(tmps4, '<span class="ina_source">', '</span>');
+        var strg1 = getstrinser(tmpg1, 'laiyuan-->', '<')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/\w+\.dzwww\.com\/auto/) > 0) {
+        var strcom = getstrinser(urlname, '/t', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('大众网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="f12">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="TRS_Editor">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(tmps4, '<title>', '</title>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span id="pubtime_baidu">', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+
+        var strg1 = getstrinser(tmpg1, '<span id="source_baidu">来源：', '</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//qi-che.cn
+function getdataqi_che(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('qi-che.com') < 0) return false;
+    if (urlname.search(/new\.qi-che\.com\/(news|auto)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车中国网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="pos">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="arc_l">', '<p class="intr">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '发布时间：', '<a')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '来源：', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/www\.qi-che\.com\/(daogou|guoneicheshi|pingce|qichezixun|rp)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车中国网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="pos">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<table class="yxsj">', '</table>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="arc_l">', '<p class="intr">')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '发布时间：', '<a')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '来源：', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//news18a.com
+function getdatanews18a(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('news18a.com') < 0) return false;
+    if (urlname.search(/(auto|v)\.news18a\.com\/news\/storys/) > 0) {
+        var strcom = getstrinser(urlname, 'storys_', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('网通社汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '当前位置：', '</p>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="ina_content ">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<title>', '</title>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span class="ina_data">', '</')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, '<span class="ina_source">', '</span>')
+        var strg1 = getstrinser(content, '>', '</a');
+        if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//pconline.com.cn 太平洋汽车科技
+function getdatapconline(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('pconline.com.cn') < 0) return false;
+    if (urlname.search(/pconline\.com\.cn\/autotech/) > 0) {
+        var strcom = getstrinser(urlname, 'autotech/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('太平洋汽车科技', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="crumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="content-cont">', '<div class="art-tools"');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<p class="content-tit-1">', '</');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span class="pubtime">', '</')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(content, '<span class="ina_source">', '</span>')
+        var strg1 = getstrinser(content, '<span class="source">出处：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/\w+\.com\.cn\/\d{4}\//) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('太平洋汽车科技', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="crumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '--文章内容--', '--文章内容end--');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="art_hd">', '<div class="art_bd">');
+        var strs4 = getstrinser(content, '<h1>', '</h1>')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(tmps4, '<p>', '出处')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(content, '<span class="ina_source">', '</span>')
+        var strg1 = getstrinser(content, 'class="bAuthor">', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/itbbs\.pconline\.com\.cn\/\tv/) > 0) {
+        var strcom = getstrinser(urlname, 'tv/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('太平洋汽车科技', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="crumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="topiccontent">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<div class="tit">', '</div>');
+        var strs4 = getstrinser(tmps4, 'title="', '“>')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span class="date">', '</span>')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(content, '<span class="ina_source">', '</span>')
+        // var strg1 = getstrinser(content, 'class="topiccontent">', '</div');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/g\.pconline\.com\.cn\/xmip/) > 0) {
+        var strcom = getstrinser(urlname, 'xmip/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('太平洋汽车科技', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, 'id="JlazyImg">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="art-title">', '</h1>');
+        // var strs4 = getstrinser(tmps4, 'title="', '“>')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span class="date">', '</span>')
+        // strs6 += getstrinser(content, 'class="mr15">', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, 'class="author">', '</span')
+        var strg1 = getstrinser(tmpg1, 'target="_blank">', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//autotimes.com.cn
+function getdataautotimes(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('autotimes.com.cn') < 0) return false;
+    if (urlname.search(/m\.autotimes\.com\.cn\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车时代网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, '<div class="m_auto_17">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<div class=" m_auto_15">', '</div>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<div class=" m_auto_16"', 'div>')
+        strs6 += getstrinser(tmps6, '</span>', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(tmps6, '<span class="ina_source">', '</span>')
+        var strg1 = getstrinser(tmps6, '>', '<span');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/autotimes\.com\.cn\/(news|dealer|market|v5lingzhi)/) > 0) {
+        var strcom = getstrinser(urlname, '/20', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车时代网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="auto_sjl_3">', '</div'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="auto_wz_40">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<div class="auto_wz_39">', '</div>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="auto_wz_11"', 'div>')
+        strs6 += getstrinser(tmps6, '>', '</');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(tmps6, '<span class="ina_source">', '</span>')
+        // var strg1 = getstrinser(tmps6, '>', '<span');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//enorth.com.cn
+function getdataenorth(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('enorth.com.cn') < 0) return false;
+    if (urlname.search(/(news|auto|economy|it|sports)\.enorth\.com\.cn\/system/) > 0) {
+        var strcom = getstrinser(urlname, 'system', '.shtml');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('北方网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="brumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<h2 class="col-sm-12">', '<span');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '编辑：', '</p')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//mydrivers.com
+function getdatamydrivers(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('mydrivers.com') < 0) return false;
+    if (urlname.search(/news\.mydrivers\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('驱动之家', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, ' 首页 > ', '</li>'), 'S3d');
+        var strq1 = getstrinser(content, 'class="news_info"', 'class="weixin"');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, 'id="thread_subject">', '</');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '编辑：', '</p')
+        var strs6 = getstrinser(tmps6, '<div class="news_bt1_left" style="width:570px;overflow:hidden;">', '出处');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, 'rel="nofollow" style="color:#999;text-decoration:underline;">', '</a');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//gai001.com
+function getdatagai001(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('gai001.com') < 0) return false;
+    if (urlname.search(/gai001\.com\/article/) > 0) {
+        var strcom = getstrinser(urlname, 'article-', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('第一改装网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="z">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<td id="article_content">', '</td>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<h1 class="ph">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '编辑：', '</p')
+        var strs6 = getstrinser(tmps6, 'class="xg1">', '<');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来自:', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//xxcmw.com
+function getdataxxcmw(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('xxcmw.com') < 0) return false;
+    if (urlname.search(/xxcmw\.com\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('新新网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="PositionNav">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="txt-wrap">', '<div class="NV_NewsEditor">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<h1 class="h2">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '编辑：', '</p')
+        var strs6 = getstrinser(tmps6, '<span class="txt">', '来源');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源：', '记者');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//mycar168.com
+function getdatamycar168(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('mycar168.com') < 0) return false;
+    if (urlname.search(/news\.\w+\.mycar168\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车大世界', 'S2') + printstr('文章', 'S3a');
+        // var tmp = getstrinser(content, '<div id="position">', '')
+        strtotal += printstr(getstrinser(content, '您的位置：', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="article">', '<div class="bdsharebuttonbox');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        // var tmps4 = getstrinser(content, '<title>', '</title>')
+        var strs4 = getstrinser(content, '<h1 id="title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(tmps6, '</a>', '责任编辑');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, 'class="copyfrom">', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//mnw.cn
+function getdatamnw(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('mnw.cn') < 0) return false;
+    if (urlname.search(/(www|auto)\.mnw\.cn\/\w+/) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('闽南网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="p">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="icontent">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<title>', '</title>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '来源:', '<a')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源:', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//xiaozhu2.com
+function getdataxiaozhu2(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('xiaozhu2.com') < 0) return false;
+    if (urlname.search(/m\.xiaozhu2\.com\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('小猪二手车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, '<div class="article-detail">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="article-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<div class="article-meta"><p>', '来源')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, '来源:', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('小猪二手车', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/www\.xiaozhu2\.com\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('小猪二手车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="esc-artical-crumbs">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="artical-main-content article-detail artical-main-content-toutiao">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, 'ref="title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="artical-main-info">', '来源')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源:', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//fanshouji.com
+function getdatafanshouji(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('fanshouji.com') < 0) return false;
+    if (urlname.search(/fanshouji\.com\/html\/a/) > 0) {
+        var strcom = getstrinser(urlname, 'a/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('微精选', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="weizhi">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="con">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, 'class="g_con"', 'class="info"')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '时间:', '</')
+        // var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, '来源:', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//hatdot.com
+function getdatahatdot(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('hatdot.com') < 0) return false;
+    if (urlname.search(/hatdot\.com\/(caijing|guoji|keji|lishi|meishi|qiche|shehui|shishang|tiyu|youxi|yule|)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('今日看点', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="listview1">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="article-content">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, 'class="listltitle"', '<p>')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '<span class="spanimg3">', '</span>')
+        // var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, '来源:', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//0car0.com  check
+function getdata0car0(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('0car0.com') < 0) return false;
+    if (urlname.search(/0car0\.com\/(xnynews|xnycar|News|Infos|NewEnergyData)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('零排放汽车网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div id="position_0car0">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div id="endtext_0car0">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '文章标题-->', '-基本属性--')
+        var strs4 = getstrinser(tmps4, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<h2>', '</h2>')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>')
+        // var strs6 = getstrinser(tmps6, '<span>', '</span>');
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, '来源:', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//huanqiu.com
+function getdatahuanqiu(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('huanqiu.com') < 0) return false;
+    if (urlname.search(/(auto|world|oversea|tech|bigdata|opinion)\.huanqiu\.com\/\w+/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('环球网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="nav_left">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="la_con">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, 'class="tle">', '</');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, 'class="la_t_a">', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(tmps6, 'class="la_t_b">', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//3car.cn
+function getdata3car(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('3car.cn') < 0) return false;
+    if (urlname.search(/www\.3car\.cn/) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('每日车网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('每日车网 > 正文', 'S3d');
+        var strq1 = getstrinser(content, '<div class="main-new-content">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, 'class="main-new-info">', '来源')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, 'class="la_t_b">', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('每日车网', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//sdnews.com.cn
+function getdatasdnews(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('sdnews.com.cn') < 0) return false;
+    if (urlname.search(/\w+\.sdnews\.com\.cn\/qc/) > 0) {
+        var strcom = getstrinser(urlname, '/t', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('鲁网汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="bread">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="TRS_Editor">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="bb info">' ,'</span>')
+        var strs6 = getstrinser(tmps6, '<span>', '来源')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源:', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//cs.com.cn
+function getdatacscom(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('cs.com.cn') < 0) return false;
+    if (urlname.search(/cs\.com\.cn\/\w+/) > 0) {
+        var strcom = getstrinser(urlname, '/t', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中证网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="current">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="article-t hidden">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(tmps6, '<em>', '</em>')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//car136.com
+function getdatacar136(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('car136.com') < 0) return false;
+    if (urlname.search(/car136\.com\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('汽车殿堂', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="t_nav">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div id="dp_nr">', '<div class="next"');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, 'Time:', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(content, '来源：', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//scol.com.cn
+function getdatascol(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('scol.com.cn') < 0) return false;
+    if (urlname.search(/car\.scol\.com\.cn\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'storys_', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('四川在线汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '当前位置：', '</p>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="ina_content ">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, 'Time:', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, '来源：', '</span>');
+        var strg1 = getstrinser(tmpg1, '>', '</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/cbgc\.scol\.com\.cn\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'news/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('四川在线汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, 'class="main-content">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="rwArticleTit">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, 'class="articleTime">', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(content, '来源：', '</span>');
+        var strg1 = getstrinser(content, '来源：', '</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/(auto|women|sichuan|house|focus|ent|sports)\.scol\.com\.cn\/news/) > 0) {
+        var strcom = getstrinser(urlname, 'cn/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('四川在线汽车', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '您的位置：', '</li>'), 'S3d');
+        var strq1 = getstrinser(content, '<div id="scol_txt">', '</div>');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, 'id="pubtime_baidu">', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, '来源：', '</span>');
+        var strg1 = getstrinser(tmpg1, '>', '</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//shangc.net
+function getdatashangc(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('shangc.net') < 0) return false;
+    if (urlname.search(/shangc\.net\/auto/) > 0) {
+        var strcom = getstrinser(urlname, 'auto/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('尚之潮网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="subnav f13">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="detail-content mb20">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="detail-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, 'class="time fl spacer-2">', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, '来源：', '</span');
+        var strg1 = getstrinser(tmpg1, '>','</')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/fensi\.shangc\.net\/p/) > 0) {
+        var strcom = getstrinser(urlname, 'p/', '');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('尚之潮网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, '<div class="detail-content">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="detail-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        // var strs6 = getstrinser(content, 'class="time fl spacer-2">', '</')
+        // if (strs6 == "") return false;
+        // strs6 = timetrtostdstr(strs6);
+        strtotal += printstr('', 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var tmpg1 = getstrinser(content, '来源：', '</span');
+        // var strg1 = getstrinser(content, '>','</')
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//henan100.com
+function getdatahenan100(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('henan100.com') < 0) return false;
+    if (urlname.search(/henan100\.com\/(jiaozuo|kaifeng|xinyang)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.shtm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('河南一百度', 'S2') + printstr('文章', 'S3a');
+        var tmps3d = getstrinser(content, 'class="city_content_position margintop20"', '</div>')
+        strtotal += printstr(getstrinser(tmps3d, '<p>', '</p>'), 'S3d');
+        var strq1 = getstrinser(content, 'class="zhengwen">', '<span class="bianji">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1>', '</h1>');
+        // var strs4 = getstrinser(tmps4, '>','</')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, '发布时间：', '<')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/auto\.henan100\.com\//) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.shtm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('河南一百度', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="breadcrumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, 'class="zhengwen">', '<span class="bianji">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<h1>', '</h1>');
+        var strs4 = getstrinser(tmps4, '>','</')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, '发布时间：', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+    if (urlname.search(/henan100\.com\/(auto|edu|news)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.shtm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('河南一百度', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="breadcrumb">', '</div>'), 'S3d');
+        var strq1 = getstrinser(content, 'class="zhengwen">', '<span class="bianji">');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, '<h1>', '</h1>');
+        var strs4 = getstrinser(tmps4, '>','</')
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, 'class="info">' ,'</div>')
+        var strs6 = getstrinser(content, '发布时间：', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//anjuke.com
+function getdataanjuke(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('anjuke.com') < 0) return false;
+    if (urlname.search(/\w+\.news\.anjuke\.com/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('安居客', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr('', 'S3d');
+        var strq1 = getstrinser(content, '<div class="lp2">', '<div class="keywords"');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="news-title">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<div class="title-bar">', '</div>')
+        var strs6 = getstrinser(tmps6, '>', '</')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        // var strg1 = getstrinser(tmps6, '来源:', '</');
+        // if (strg1 == "") return false;
+        strtotal += printstr('', 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//qingdaonews.com
+function getdataqingdaonews(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('qingdaonews.com') < 0) return false;
+    if (urlname.search(/auto\.qingdaonews\.com\/content/) > 0) {
+        var strcom = getstrinser(urlname, 'content_', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('青岛新闻网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, '<div class="m-crm">', '</div'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="m-ct mb80">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(content, '<h1 class="m-tt-1">', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, '<div class="m-msg-1">', '<div')
+        var strs6 = getstrinser(tmps6, '<span>', '</span>')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var tmpg1 = getstrinser(content, '来源：', '</span>')
+        var strg1 = getstrinser(tmpg1, '>', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//ecar168.cn
+function getdataecar168(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('ecar168.cn') < 0) return false;
+    if (urlname.search(/news\.ecar168\.cn\/\w+/) > 0) {
+        var strcom = getstrinser(urlname, 'cn', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('购车网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="lujing">', '</span'), 'S3d');
+        var strq1 = getstrinser(content, 'neirong', '<div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, 'biaoti', '</div>')
+        var strs4 = getstrinser(tmps4, '<h1', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        // var tmps6 = getstrinser(content, '<div class="m-msg-1">', '<div')
+        var strs6 = getstrinser(content, '时间：', '来源')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</')
+        // var strg1 = getstrinser(tmpg1, '>', '</');
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//chinayet.com
+function getdatachinayet(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('chinayet.com') < 0) return false;
+    if (urlname.search(/news\.ecar168\.cn\/\w+/) > 0) {
+        var strcom = getstrinser(urlname, 'com', '.htm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('华中在线', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="bname">', '</div'), 'S3d');
+        var strq1 = getstrinser(content, '<div class="article_content">', '<div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var tmps4 = getstrinser(content, 'class="article_title"', '</div>')
+        var strs4 = getstrinser(tmps4, '<h1', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="article_title"', '</div')
+        var strs6 = getstrinser(tmps6, '<p>', '来源')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '作者')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//lanzhou.cn
+function getdatalanzhou(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('lanzhou.cn') < 0) return false;
+    if (urlname.search(/(auto|economy|house|lz|wz)\.lanzhou\.cn\/system/) > 0) {
+        var strcom = getstrinser(urlname, 'system', '.shtm');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('中国兰州网', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="duiqi">', '</p'), 'S3d');
+        var strq1 = getstrinser(content, 'id="Zoom">', '</td');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(tmps4, '<h1', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var strs6 = getstrinser(content, '发布时间：','【')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '稿源：', '编辑')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
+//360che.com
+function getdata360che(urlname, urltitle, content, rval) {
+    if (urlname.indexOf('360che.com') < 0) return false;
+    if (urlname.search(/360che\.com\/(news|tech|market)/) > 0) {
+        var strcom = getstrinser(urlname, 'com/', '.html');
+        var strtotal = printstr(strcom, 'S0') + printstr(urlname, 'S1') + printstr('卡车之家', 'S2') + printstr('文章', 'S3a');
+        strtotal += printstr(getstrinser(content, 'class="mapdz">', '</div'), 'S3d');
+        var strq1 = getstrinser(content, 'class="new-article">', '</div');
+        if (strq1 == "") return false;
+        strtotal += printstr(strq1, 'Q1');
+
+        var strs4 = getstrinser(tmps4, '<h1', '</h1>');
+        if (strs4 == "") return false;
+        strtotal += printstr(strs4, 'S4') + printstr(datetostdstr(new Date()), 'S5');
+
+        var tmps6 = getstrinser(content, 'class="article_info">', '</div')
+        var strs6 = getstrinser(tmps6, '<span>','</span>')
+        if (strs6 == "") return false;
+        strs6 = timetrtostdstr(strs6);
+        strtotal += printstr(strs6, 'S6') + printstr('PC', 'S7') + "《S9》1《/S9》《ID》1《/ID》";
+        var strg1 = getstrinser(content, '来源：', '</span')
+        if (strg1 == "") return false;
+        strtotal += printstr(strg1, 'G1');
+        rval.content += printstr(strtotal, 'Root') + '\r\n';
+        return true;
+    }
+}
 
 
 

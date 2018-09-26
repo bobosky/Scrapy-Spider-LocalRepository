@@ -8,5 +8,8 @@ from scrapy.cmdline import execute
 # execute('scrapy crawl xuexiaohuangye -s JOBDIR=JobDir/xuexiaohuangye'.split())
 # execute('scrapy crawl 51sxue'.split())
 # execute('scrapy crawl gdedu'.split())
-execute('scrapy crawl weixinArticle -s JOBDIR=JobDir/Weixin'.split())
+# execute('scrapy crawl weixinArticle -s JOBDIR=JobDir/Weixin'.split())
+execute('scrapy crawl YiHaoDian'.split())
+
+
 
