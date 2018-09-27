@@ -72,7 +72,7 @@ CONCURRENT_REQUESTS_PER_IP = 10
 DOWNLOADER_MIDDLEWARES = {
    # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
    # 'travellerSP.middlewares.ProxyMiddleWare': 750,
-   'travellerSP.middlewares.GetDownloadMiddleware': 901
+   'travellerSP.middlewaresUrllib.GetDownloadMiddleware': 901
    # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
 # Enable or disable extensions
