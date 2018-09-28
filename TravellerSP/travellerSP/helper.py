@@ -14,6 +14,14 @@ def getUrlWithPars(dict):
         str.append(tmp)
     return '&'.join(str)
 
+
+def conv2list(dict):
+    tmp = []
+    for key in dict.keys():
+        str = '{k}:{v}'.format(k=key,v=dict[key])
+        tmp.append(str)
+    return tmp
+
 class Redis_proxy:
     # def __init__(self):
     #     self.pool = redis.ConnectionPool(max_connections=5,host='13.230.98.46',port=6379)
