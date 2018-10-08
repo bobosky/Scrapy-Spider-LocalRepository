@@ -9,18 +9,18 @@ class YiHaoDianSpider(scrapy.Spider):
     name = 'YiHaoDian'
     cur_page = None
     productPage = {
-        '莫斯利安%20酸奶':1,
-        '莫斯利安%20酸牛奶':1,
-        '%20乳粉':1,
-        '光明%20奶粉':1,
-        '光明%20牛奶饮品':1,
-        '光明%20酸牛奶':1,
-        '光明%20酸奶':1,
-        '光明%20乳酸菌饮品':1,
-        '光明%20纯牛奶':1,
-        '光明%20优+':1,
-        '莫斯利安%20双发酵酸乳':6,
-        '莫斯利安%20两果三蔬':6,
+        '莫斯利安酸奶':1,
+        '莫斯利安酸牛奶':1,
+        '乳粉':1,
+        '光明奶粉':1,
+        '光明牛奶饮品':1,
+        '光明酸牛奶':1,
+        '光明酸奶':1,
+        '光明乳酸菌饮品':1,
+        '光明纯牛奶':1,
+        '光明优+':1,
+        '莫斯利安双发酵酸乳':1,
+        '莫斯利安两果三蔬':1,
     }
 
     headers2 = {
@@ -40,6 +40,7 @@ class YiHaoDianSpider(scrapy.Spider):
         'accept-encoding':'gzip, deflate, br',
         'accept-language':'zh-CN,zh;q=0.9',
         'referer':None,
+        'charset':'UTF-8',
         'user-agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
         'x-requested-with':'XMLHttpRequest'
     }
@@ -57,8 +58,13 @@ class YiHaoDianSpider(scrapy.Spider):
         for a in self.productPage.keys():
             for p in range(1,self.productPage[a]+1):
                 homePge_tmp = [
+                    # 'https://search.yhd.com/c0-0/k{}'.format(a),
                     "https://search.yhd.com/c0-0/mbname{k1}-b/a-s2-v4-p{p}-price-d0-f0b-m1-rt0-pid-mid0-color-size-k{k2}/".format(k1=a,k2=a,p=p),
-                    "https://search.yhd.com/searchPage/c0-0/mbname{k1}-b/a-s2-v4-p{p}-price-d0-f0b-m1-rt0-pid-mid0-color-size-k{k2}/?&isGetMoreProducts=1&moreProductsFashionCateType=2&fashionCateType=2".format(k1=a,k2=a,p=p)
+
+                    # "https://search.yhd.com/searchPage/c0-0/mbname{k1}-b/a-s2-v4-p{p}-price-d0-f0b-m1-rt0-pid-mid0-color-size-k{k2}/?isGetMoreProducts=1&moreProductsFashionCateType=2&fashionCateType=2".format(k1=a,k2=a,p=p)
+                    'https://search.yhd.com/searchPage/c0-0/mbname{k1}-b/a-s1-v4-p1-price-d0-f0b-m1-rt0-pid-mid0-color-size-k{k2}/?isGetMoreProducts=1&moreProductsFashionCateType=2&fashionCateType=2'.format(
+                        k1=a, k2=a)
+
                 ]
                 self.headers['referer'] = "https://search.yhd.com/c0-0/mbname{}-b/a-s2-v4-p1-price-d0-f0b-m1-rt0-pid-mid0-color-size-k{}/"
                 for url in homePge_tmp:
@@ -68,9 +74,10 @@ class YiHaoDianSpider(scrapy.Spider):
                     else:
                         tmpheads = None
                         type = 0
-                    yield Request(url=url,callback=self.prodPage_parse,dont_filter=True,meta={'headers':tmpheads,'type':type,'wait':4})
+                    yield Request(url=url,callback=self.prodPage_parse,dont_filter=True,meta={'hd':tmpheads,'type':type,'a':a})
 
     def prodPage_parse(self, response):
+        print('响应内容--{a}-产品搜索结果页---{l}\n'.format(l=len(response.text),a=response.meta['a']))
         if response.meta['type'] == 1:
             sele = etree.HTML(json.loads(response.text)['value'])
             items = sele.xpath('//div[@class="mod_search_pro"]/div')
@@ -83,7 +90,7 @@ class YiHaoDianSpider(scrapy.Spider):
                     self.pars['pagenationVO.currentPage'] = 1
                     self.cur_page = 1
                     url = 'https://item.yhd.com/squ/comment/getCommentDetail.do?{}'.format(getUrlWithPars(self.pars))
-                    yield Request(url=url, callback=self.loop_ParsAndRequest, meta={'headers': self.headers,'pid':product_id,'wait':4})
+                    yield Request(url=url, callback=self.loop_ParsAndRequest,dont_filter=True, meta={'hd': self.headers,'pid':product_id})
         else:
             items = response.css('.mod_search_pro')
             for each in items:
@@ -95,7 +102,7 @@ class YiHaoDianSpider(scrapy.Spider):
                     self.pars['pagenationVO.currentPage'] = 1
                     self.cur_page = 1
                     url = 'https://item.yhd.com/squ/comment/getCommentDetail.do?{}'.format(getUrlWithPars(self.pars))
-                    yield Request(url=url, callback=self.loop_ParsAndRequest, meta={'headers': self.headers,'pid':product_id,'wait':4})
+                    yield Request(url=url, callback=self.loop_ParsAndRequest,dont_filter=True, meta={'hd': self.headers,'pid':product_id})
 
 
     def loop_ParsAndRequest(self,response):
@@ -108,10 +115,10 @@ class YiHaoDianSpider(scrapy.Spider):
             self.pars['productId'] = response.meta['pid']
             self.pars['pagenationVO.currentPage'] = self.cur_page
             url = 'https://item.yhd.com/squ/comment/getCommentDetail.do?{}'.format(getUrlWithPars(self.pars))
-            yield Request(url=url, callback=self.loop_ParsAndRequest, meta={'headers': self.headers, 'pid': response.meta['pid'],'wait':4})
+            yield Request(url=url, callback=self.loop_ParsAndRequest,dont_filter=True, meta={'hd': self.headers, 'pid': response.meta['pid']})
 
     def analysis(self,response):
-        print('目前頁面',self.cur_page)
+        print('响应内容---PID:{p}评论结果{cp}页---{l}\n'.format(p=response.meta['pid'],l=len(response.text),cp=self.cur_page),response.text)
         html = json.loads(response.text)['value']
         selector = etree.HTML(html)
         items = selector.xpath('//div[@class="item good-comment"]')
@@ -125,6 +132,8 @@ class YiHaoDianSpider(scrapy.Spider):
             tmp2 = each.xpath('./dl/dd[@class="replyBtn_con clearfix"]/span[@class="date"]/text()')[0]
             piplineItem['date'] = re.search('\d+\-\d+\-\d+\s+\d+\:\d+\:\d+', tmp2).group(0)
             piplineItem['crawlTime'] = get_locationtime()
+
+            print(piplineItem)
 
             self.pipline.process_item(item=piplineItem,spider=None)
             print(piplineItem)

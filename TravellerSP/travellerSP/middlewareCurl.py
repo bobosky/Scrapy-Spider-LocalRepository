@@ -9,6 +9,7 @@ from scrapy import log
 from io import BytesIO
 from scrapy.http import HtmlResponse
 from travellerSP.helper import conv2list
+from pycurl import error
 import pycurl,requests,certifi,time,re,random
 
 class GetDownloadMiddleware(object):
@@ -54,12 +55,17 @@ class GetDownloadMiddleware(object):
             curlDownloader.setopt(pycurl.POSTFIELDS, request.meta['post'])
 
         curlDownloader.setopt(pycurl.URL, request.url)
-        curlDownloader.setopt(pycurl.WRITEFUNCTION, self.bio)
+        curlDownloader.setopt(pycurl.ENCODING, 'gzip, deflate')
+        curlDownloader.setopt(pycurl.WRITEFUNCTION, bio.write)
         curlDownloader.setopt(pycurl.CAINFO, certifi.where())
 
         curlDownloader.perform()
 
-        response = HtmlResponse(url=curlDownloader.getinfo(pycurl.EFFECTIVE_URL), body=bio.getvalue(),request=request,status=curlDownloader.getinfo(pycurl.RESPONSE_CODE))
+        response = HtmlResponse(url=curlDownloader.getinfo(pycurl.EFFECTIVE_URL), body=bio.getvalue(),request=request,status=curlDownloader.getinfo(pycurl.RESPONSE_CODE),encoding='utf-8')
+        if not curlDownloader.getinfo(pycurl.RESPONSE_CODE) in [200, 201, 204, 206, 302]:
+            request.dont_filter = True
+            return request
+
         curlDownloader.close()
         bio.close()
         return response
@@ -111,8 +117,9 @@ class ProxyMiddleWare(object):
                 curlDownloader.setopt(pycurl.POSTFIELDS, request.meta['post'])
 
             curlDownloader.setopt(pycurl.PROXY, 'http://{}'.format(proxy))
+            curlDownloader.setopt(pycurl.ENCODING, 'gzip, deflate')
             curlDownloader.setopt(pycurl.URL, request.url)
-            curlDownloader.setopt(pycurl.WRITEFUNCTION, self.bio)
+            curlDownloader.setopt(pycurl.WRITEFUNCTION, bio.write)
             curlDownloader.setopt(pycurl.CAINFO, certifi.where())
 
             curlDownloader.perform()

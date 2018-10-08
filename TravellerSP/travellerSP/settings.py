@@ -72,7 +72,7 @@ CONCURRENT_REQUESTS_PER_IP = 10
 DOWNLOADER_MIDDLEWARES = {
    # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': None,
    # 'travellerSP.middlewares.ProxyMiddleWare': 750,
-   'travellerSP.middlewaresUrllib.GetDownloadMiddleware': 901
+   'travellerSP.middlewareCurl.GetDownloadMiddleware': 901
    # 'travellerSP.middlewares.PostDownloadMiddleware': 901,
 }
 # Enable or disable extensions
@@ -108,3 +108,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
